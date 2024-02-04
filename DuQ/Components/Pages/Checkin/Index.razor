@@ -1,39 +1,43 @@
 @page "/Checkin"
 @attribute [StreamRendering]
 
-<div class="w-full justify-center">
-
-    <div class="py-4 text-center"><label class="text-2xl">Student Services Checkin</label></div>
-
-    @if (_isCheckedIn is false)
-{
-    <form method="post" @onsubmit="Submit" @formname="checkin-form" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-        <AntiforgeryToken />
-        <div>
-            <label class="block text-gray-700 text-sm font-bold mb-4">
-                Student Id:
-                <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                           @bind-Value="Model!.StudentId" />
-            </label>
-        </div>
-        <div>
-            <label class="block text-gray-700 text-sm font-bold mb-8">
-                First Name:
-                <InputText class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                           @bind-Value="Model!.FirstName" />
-            </label>
-        </div>
-        <div class="flex items-center justify-between my-88 mt-16">
-            <button type="submit" class="w-full bg-fullerton hover:bg-fullerton-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Check In
-            </button>
-        </div>
-    </form>
-}
-
-else
-{
-    <h1>Thank you for checking in @_myName</h1>
-}
-
+<AntiforgeryToken/>
+<div>
+    <FluentLabel>Student Services Checkin</FluentLabel>
 </div>
+
+<FluentGrid>
+    @if (_isCheckedIn is false)
+    {
+        <FluentGridItem xs="12">
+            <EditForm Model="@Model" OnValidSubmit="@SubmitAsync" FormName="StudentCheckin" novalidate>
+                <DataAnnotationsValidator/>
+                <FluentValidationSummaryl/>
+
+                <FluentGridItem xs="12">
+                    <FluentTextField Name="StudentID" @bind-Value="Model!.StudentId" Label="Student ID" Required/>
+                    <FluentValidationMessage For="@(() => Model!.StudentId)"/>
+                </FluentGridItem>
+
+                <FluentTextField Name="FirstName" @bind-Value="Model!.FirstName" Label="First Name" Required/>
+                <FluentValidationMessage For="@(() => Model!.FirstName)"/>
+
+                <FluentSelect name="class" Id="classification" @bind-Value="Model!.QueueType" TOption="string" Required Label="Service Type">
+                    <FluentOption Value="">Select Service</FluentOption>
+                    <FluentOption Value="CampusIdCard">Campus ID Card</FluentOption>
+                    <FluentOption Value="CapAndGown">Cap & Gown</FluentOption>
+                    <FluentOption Value="Other">Other</FluentOption>
+                </FluentSelect>
+                <FluentValidationMessage For="@(() => Model!.QueueType)"/>
+
+                <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">Check In</FluentButton>
+            </EditForm>
+        </FluentGridItem>
+    }
+
+    else
+    {
+        <h1>Thank you for checking in @_myName</h1>
+    }
+
+</FluentGrid>

@@ -21,9 +21,14 @@ public partial class Index
         _isCheckedIn = false;
     }
 
-    private void Submit()
+    private async Task SubmitAsync()
     {
         _myName = Model!.StudentId;
         _isCheckedIn = true;
+    }
+
+    private async Task SelectQueueAsync()
+    {
+
     }
 }

@@ -105,9 +105,12 @@ public class Queue
 public record CheckinModel
 {
     [Required]
+    [MinLength(3, ErrorMessage = "Student ID is too short")]
+    [StringLength(20, ErrorMessage = "Student ID is too long (20 character limit).")]
     public string StudentId { get; set; }
     [Required]
+    [StringLength(50, ErrorMessage = "First Name too long (50 character limit).")]
     public string FirstName { get; set; }
     [Required]
-    public Guid QueueTypeId { get; set; }
+    public string QueueType { get; set; }
 }

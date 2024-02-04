@@ -1,6 +1,7 @@
 using DuQ.Components;
 using DuQ.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,10 @@ builder.Services.AddDbContext<DuqContext>(
     options => options.UseSqlite($"Data Source={dbFileLocation}"));
 
 builder.Services.AddTransient<DuQ.Components.Pages.Checkin.Domain>();
+
+
+builder.Services.AddHttpClient();
+builder.Services.AddFluentUIComponents();
 
 var app = builder.Build();
 
