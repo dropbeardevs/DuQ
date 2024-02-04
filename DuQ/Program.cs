@@ -11,6 +11,8 @@ builder.Services.AddRazorComponents()
 
 string dbFileLocation = builder.Configuration.GetValue<string>("DbFileLocation") ?? throw new NullReferenceException("Missing DbFileLocation");
 
+
+
 builder.Services.AddDbContext<DuqContext>(
     options => options.UseSqlite($"Data Source={dbFileLocation}"));
 

@@ -1,6 +1,15 @@
-@page "/Status"
-<h3>Index</h3>
+@page "/status"
+@rendermode InteractiveServer
 
-@code {
+<AntiforgeryToken/>
 
+<h3>Status</h3>
+
+@if (IsLoading)
+{
+    <div>Loading...</div>
+}
+else
+{
+    <div>HELLO @Name</div>
 }

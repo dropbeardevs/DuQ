@@ -9,8 +9,8 @@ namespace DuQ.Data;
 public class DuqContext : DbContext
 {
     public DbSet<Student> Students { get; set; }
-    public DbSet<QueueType> QueueTypes { get; set; }
-    public DbSet<QueueStatus> QueueStatuses { get; set; }
+    public DbSet<DuQueueType> DuQueueTypes { get; set; }
+    public DbSet<DuQueueStatus> DuQueueStatuses { get; set; }
     public DbSet<DuQueue> DuQueues { get; set; }
 
     public DuqContext(DbContextOptions<DuqContext> options) : base(options)
@@ -28,48 +28,72 @@ public class DuqContext : DbContext
             .IsRequired();
 
         modelBuilder.Entity<Student>()
-            .Property(s => s.StudentId)
+            .Property(s => s.StudentNo)
             .IsRequired();
 
         modelBuilder.Entity<Student>()
-            .Property(s => s.StudentFirstName)
+            .Property(s => s.FirstName)
             .IsRequired()
             .HasMaxLength(50);
 
         modelBuilder.Entity<Student>()
-            .Property(s => s.StudentLastName)
+            .Property(s => s.LastName)
             .HasMaxLength(50);
 
-        modelBuilder.Entity<QueueType>()
+        modelBuilder.Entity<Student>()
+            .Property(s => s.LastUpdated)
+            .IsRequired();
+
+        modelBuilder.Entity<DuQueueType>()
             .HasKey(qt => qt.Id);
 
-        modelBuilder.Entity<QueueType>()
+        modelBuilder.Entity<DuQueueType>()
             .Property(qt => qt.Id)
             .IsRequired();
 
-        modelBuilder.Entity<QueueType>()
-            .Property(qt => qt.QueueName)
+        modelBuilder.Entity<DuQueueType>()
+            .Property(qt => qt.Name)
             .IsRequired()
             .HasMaxLength(50);
 
-        modelBuilder.Entity<QueueStatus>()
+        modelBuilder.Entity<DuQueueType>()
+            .Property(qt => qt.LastUpdated)
+            .IsRequired();
+
+        modelBuilder.Entity<DuQueueStatus>()
             .HasKey(qs => qs.Id);
 
-        modelBuilder.Entity<QueueStatus>()
+        modelBuilder.Entity<DuQueueStatus>()
             .Property(qs => qs.Id)
             .IsRequired();
 
-        modelBuilder.Entity<QueueStatus>()
+        modelBuilder.Entity<DuQueueStatus>()
             .Property(qs => qs.Status)
             .IsRequired()
             .HasMaxLength(50);
 
-        modelBuilder.Entity<DuQueue>()
-            .HasKey(q => q.Id);
+        modelBuilder.Entity<DuQueueStatus>()
+            .Property(qs => qs.LastUpdated)
+            .IsRequired();
 
         modelBuilder.Entity<DuQueue>()
-            .Property(q => q.Id)
+            .HasKey(q => q.QueueId);
+
+        modelBuilder.Entity<DuQueue>()
+            .Property(q => q.QueueId)
             .IsRequired();
+
+        modelBuilder.Entity<DuQueue>()
+            .Property(q => q.LastUpdated)
+            .IsRequired();
+
+        // modelBuilder.Entity<DuQueue>()
+        //     .Property(q => q.QueueType)
+        //     .IsRequired();
+
+        // modelBuilder.Entity<DuQueue>()
+        //     .Property(q => q.QueueStatus)
+        //     .IsRequired();
     }
     #endregion
 
@@ -78,29 +102,40 @@ public class DuqContext : DbContext
 public class Student
 {
     public Guid Id { get; set; }
-    public string StudentId { get; set; }
-    public string StudentFirstName { get; set; }
-    public string? StudentLastName { get; set; }
+    public string StudentNo { get; set; }
+    public string FirstName { get; set; }
+    public string? LastName { get; set; }
+    public DateTime LastUpdated { get; set; }
+
+    public List<DuQueue>? Queues { get; set; }
 }
 
-public class QueueType
+public class DuQueueType
 {
     public Guid Id { get; set; }
-    public string? QueueName { get; set; }
+    public string Name { get; set; }
+    public DateTime LastUpdated { get; set; }
+
+    public List<DuQueue>? Queues { get; set; }
 }
 
-public class QueueStatus
+public class DuQueueStatus
 {
     public Guid Id { get; set; }
-    public string? Status { get; set; }
+    public string Status { get; set; }
+    public DateTime LastUpdated { get; set; }
+    public List<DuQueue>? Queues { get; set; }
 }
 
 public class DuQueue
 {
-    public long Id { get; set; }
-    public QueueType? QueueType { get; set; }
-    public Student? Student { get; set; }
-    public QueueStatus? Status { get; set; }
+    public long QueueId { get; set; }
+    public Student Student { get; set; }
+    public DuQueueType QueueType { get; set; }
+    public DuQueueStatus QueueStatus { get; set; }
+    public DateTime CheckinTime { get; set; }
+    public DateTime CheckoutTime { get; set; }
+    public DateTime LastUpdated { get; set; }
 }
 
 public class CheckinModel
