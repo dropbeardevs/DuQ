@@ -9,12 +9,11 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
-        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
-      <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.4.0" />
-      <PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.4.0" />
+      <PackageReference Include="MudBlazor" Version="6.15.0" />
     </ItemGroup>
 
 

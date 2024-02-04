@@ -1,7 +1,7 @@
 using DuQ.Components;
 using DuQ.Data;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.FluentUI.AspNetCore.Components;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,9 +19,8 @@ builder.Services.AddDbContext<DuqContext>(
 builder.Services.AddTransient<DuQ.Components.Pages.Checkin.Domain>();
 builder.Services.AddTransient<DuQ.Components.Pages.Status.Domain>();
 
-
-builder.Services.AddHttpClient();
-builder.Services.AddFluentUIComponents();
+//builder.Services.AddHttpClient();
+builder.Services.AddMudServices();
 
 var app = builder.Build();
 

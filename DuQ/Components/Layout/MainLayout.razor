@@ -1,22 +1,21 @@
 ﻿@inherits LayoutComponentBase
 
-<MainHeader />
+<MudThemeProvider/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
-<div>
-    <main>
-        <article>
-            @Body
-        </article>
-    </main>
-</div>
+<MudAppBar>
+    Fullerton College
+</MudAppBar>
+
+<MudLayout>
+    <MudMainContent>
+        @Body
+    </MudMainContent>
+</MudLayout>
 
 <div id="blazor-error-ui">
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
-
-<FluentToastProvider />
-<FluentDialogProvider />
-<FluentTooltipProvider />
-<FluentMessageBarProvider />
