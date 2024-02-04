@@ -2,35 +2,60 @@
 @attribute [StreamRendering]
 
 <AntiforgeryToken/>
-<div>
-    <FluentLabel>Student Services Checkin</FluentLabel>
-</div>
 
-<FluentGrid>
+<FluentGrid Style="width: 90vw; margin: auto;" Justify="JustifyContent.Center">
     @if (_isCheckedIn is false)
     {
-        <FluentGridItem xs="12">
+        <FluentGridItem xs="12" Style="margin-top: 10px; margin-bottom: 10px;">
+            <FluentGridItem xs="12" Style="margin-top: 10px; margin-bottom: 20px;">
+                <FluentLabel Typo="Typography.Header"
+                             Alignment="HorizontalAlignment.Center"
+                             Weight="FontWeight.Bold">Student Services Checkin</FluentLabel>
+            </FluentGridItem>
+
             <EditForm Model="@Model" OnValidSubmit="@SubmitAsync" FormName="StudentCheckin" novalidate>
                 <DataAnnotationsValidator/>
-                <FluentValidationSummaryl/>
+                @* <FluentValidationSummary/> *@
 
-                <FluentGridItem xs="12">
-                    <FluentTextField Name="StudentID" @bind-Value="Model!.StudentId" Label="Student ID" Required/>
+                <FluentGridItem xs="12" Style="margin-top: 10px; margin-bottom: 10px;">
+                    <FluentTextField Name="Model.StudentID"
+                                     @bind-Value="Model!.StudentId"
+                                     Label="Student ID"
+                                     Style="width: 100%;"
+                                     Required/>
                     <FluentValidationMessage For="@(() => Model!.StudentId)"/>
                 </FluentGridItem>
 
-                <FluentTextField Name="FirstName" @bind-Value="Model!.FirstName" Label="First Name" Required/>
-                <FluentValidationMessage For="@(() => Model!.FirstName)"/>
+                <FluentGridItem xs="12" Style="margin-top: 10px; margin-bottom: 10px;">
+                    <FluentTextField Name="Model.FirstName"
+                                     @bind-Value="Model!.FirstName"
+                                     Label="First Name"
+                                     Style="width: 100%;"
+                                     Required/>
+                    <FluentValidationMessage For="@(() => Model!.FirstName)"/>
+                </FluentGridItem>
 
-                <FluentSelect name="class" Id="classification" @bind-Value="Model!.QueueType" TOption="string" Required Label="Service Type">
-                    <FluentOption Value="">Select Service</FluentOption>
-                    <FluentOption Value="CampusIdCard">Campus ID Card</FluentOption>
-                    <FluentOption Value="CapAndGown">Cap & Gown</FluentOption>
-                    <FluentOption Value="Other">Other</FluentOption>
-                </FluentSelect>
-                <FluentValidationMessage For="@(() => Model!.QueueType)"/>
-
-                <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent">Check In</FluentButton>
+                <FluentGridItem xs="12" Style="margin-top: 10px; margin-bottom: 50px;">
+                    <FluentSelect name="Model.QueueType"
+                                  Id="QueueType"
+                                  @bind-Value="Model!.QueueType"
+                                  TOption="string"
+                                  Label="Service Type"
+                                  Style="width: 100%;"
+                                  Required>
+                        <FluentOption Value="">Select Service</FluentOption>
+                        <FluentOption Value="CampusIdCard">Campus ID Card</FluentOption>
+                        <FluentOption Value="CapAndGown">Cap & Gown</FluentOption>
+                        <FluentOption Value="Other">Other</FluentOption>
+                    </FluentSelect>
+                    <FluentValidationMessage For="@(() => Model!.QueueType)"/>
+                </FluentGridItem>
+                <FluentGridItem xs="12">
+                    <FluentButton Type="ButtonType.Submit"
+                                  IconEnd="@(new Icons.Regular.Size20.GlobeLocation())"
+                                  Appearance="Appearance.Neutral"
+                                  Style="width: 100%; margin-bottom: 50px;">Check In</FluentButton>
+                </FluentGridItem>
             </EditForm>
         </FluentGridItem>
     }

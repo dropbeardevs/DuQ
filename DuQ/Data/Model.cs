@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace DuQ.Data;
 
@@ -102,15 +103,15 @@ public class Queue
     public QueueStatus? Status { get; set; }
 }
 
-public record CheckinModel
+public class CheckinModel
 {
-    [Required]
+    [Required(ErrorMessage = "Student ID is required")]
     [MinLength(3, ErrorMessage = "Student ID is too short")]
     [StringLength(20, ErrorMessage = "Student ID is too long (20 character limit).")]
-    public string StudentId { get; set; }
-    [Required]
+    public string? StudentId { get; set; }
+    [Required (ErrorMessage = "First Name is required")]
     [StringLength(50, ErrorMessage = "First Name too long (50 character limit).")]
-    public string FirstName { get; set; }
-    [Required]
-    public string QueueType { get; set; }
+    public string? FirstName { get; set; }
+    [Required (ErrorMessage = "Service Type is required")]
+    public string? QueueType { get; set; }
 }

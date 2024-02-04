@@ -5,7 +5,6 @@ namespace DuQ.Components.Pages.Checkin;
 
 public partial class Index
 {
-
     [Inject]
     private Domain? Domain { get; set; }
 
@@ -23,12 +22,8 @@ public partial class Index
 
     private async Task SubmitAsync()
     {
-        _myName = Model!.StudentId;
+        await Domain!.SaveStudent(Model!);
+
         _isCheckedIn = true;
-    }
-
-    private async Task SelectQueueAsync()
-    {
-
     }
 }
