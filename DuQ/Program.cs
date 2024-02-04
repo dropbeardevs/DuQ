@@ -15,6 +15,7 @@ builder.Services.AddDbContext<DuqContext>(
     options => options.UseSqlite($"Data Source={dbFileLocation}"));
 
 builder.Services.AddTransient<DuQ.Components.Pages.Checkin.Domain>();
+builder.Services.AddTransient<DuQ.Components.Pages.Status.Domain>();
 
 
 builder.Services.AddHttpClient();

@@ -5,11 +5,32 @@ namespace DuQ.Components.Pages.Checkin;
 
 public class Domain(DuqContext context)
 {
-    public async Task SaveStudent(CheckinModel model)
+    public async Task<bool> SaveStudent(CheckinModel? model)
     {
-        context.Students.Add(new Student()
+        if (model is null)
+            return false;
+
+        var testItem = new DuQueue()
         {
-            StudentFirstName = model.FirstName
-        });
+            QueueType = new QueueType()
+            {
+                QueueName = "Test"
+            },
+            Status = new QueueStatus()
+            {
+                Status = "Waiting"
+            },
+            Student = new Student()
+            {
+                StudentFirstName = "Homer",
+                StudentId = "12345"
+            }
+        };
+
+        context.DuQueues.Add(testItem);
+
+        await context.SaveChangesAsync();
+
+        return true;
     }
 }

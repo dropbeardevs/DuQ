@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <Folder Include="Components\Pages\Admin\" />
+      <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>

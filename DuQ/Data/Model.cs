@@ -11,7 +11,7 @@ public class DuqContext : DbContext
     public DbSet<Student> Students { get; set; }
     public DbSet<QueueType> QueueTypes { get; set; }
     public DbSet<QueueStatus> QueueStatuses { get; set; }
-    public DbSet<Queue> Queue { get; set; }
+    public DbSet<DuQueue> DuQueues { get; set; }
 
     public DuqContext(DbContextOptions<DuqContext> options) : base(options)
     {
@@ -64,10 +64,10 @@ public class DuqContext : DbContext
             .IsRequired()
             .HasMaxLength(50);
 
-        modelBuilder.Entity<Queue>()
+        modelBuilder.Entity<DuQueue>()
             .HasKey(q => q.Id);
 
-        modelBuilder.Entity<Queue>()
+        modelBuilder.Entity<DuQueue>()
             .Property(q => q.Id)
             .IsRequired();
     }
@@ -80,7 +80,7 @@ public class Student
     public Guid Id { get; set; }
     public string StudentId { get; set; }
     public string StudentFirstName { get; set; }
-    public string StudentLastName { get; set; }
+    public string? StudentLastName { get; set; }
 }
 
 public class QueueType
@@ -95,7 +95,7 @@ public class QueueStatus
     public string? Status { get; set; }
 }
 
-public class Queue
+public class DuQueue
 {
     public long Id { get; set; }
     public QueueType? QueueType { get; set; }

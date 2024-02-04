@@ -22,7 +22,7 @@ public partial class Index
 
     private async Task SubmitAsync()
     {
-        await Domain!.SaveStudent(Model!);
+        bool success = await Domain!.SaveStudent(Model!);
 
         _isCheckedIn = true;
     }
