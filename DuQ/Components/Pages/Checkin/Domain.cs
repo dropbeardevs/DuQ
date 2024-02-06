@@ -11,28 +11,51 @@ public class Domain(DuqContext context)
         if (model is null)
             return false;
 
-        Student student = new()
-        {
-            StudentNo = model.StudentId!,
-            FirstName = model.FirstName!,
-        };
-
         try
         {
-            DuQueueType? queueType = await context.DuQueueTypes
-                .Where(x => x.Name == model.QueueType)
-                .FirstOrDefaultAsync();
+            // Add logic to prevent students from adding themselves multiple times
 
-            DuQueueStatus? queueStatus = await context.DuQueueStatuses
-                .Where(x => x.Status == "In Queue")
-                .FirstOrDefaultAsync();
+            Student? student = await context.Students
+                .FirstOrDefaultAsync(x => x.StudentNo == model.StudentId);
 
-            if (queueType is null || queueStatus is null)
+            if (student is not null)
             {
-                throw new Exception("Unable to get Queue Type or Queue Status");
+                // Check if they've checked in within the last hour
+                // If so, then update existing record
+                DuQueue? queueItem = await context.DuQueues
+                    .Where(x => x.Student.StudentNo == model.StudentId)
+                    .Where(x => x.CheckinTime > DateTime.Now.AddHours(-1))
+                    .FirstOrDefaultAsync();
+
+                if (queueItem is not null)
+                {
+                    queueItem.CheckinTime = DateTime.Now;
+                    queueItem.LastUpdated = DateTime.Now;
+                    queueItem.QueueType = await context.DuQueueTypes
+                        .Where(x => x.Name == model.QueueType)
+                        .FirstAsync();
+
+                    await context.SaveChangesAsync();
+
+                    return true;
+                }
             }
 
-            DuQueue queueItem = new()
+            student ??= new Student()
+            {
+                StudentNo = model.StudentId!,
+                FirstName = model.FirstName!,
+            };
+
+            DuQueueType queueType = await context.DuQueueTypes
+                .Where(x => x.Name == model.QueueType)
+                .FirstAsync();
+
+            DuQueueStatus queueStatus = await context.DuQueueStatuses
+                .Where(x => x.Status == "In Queue")
+                .FirstAsync();
+
+            DuQueue newQueueItem = new()
             {
                 Student = student,
                 QueueType = queueType,
@@ -41,7 +64,7 @@ public class Domain(DuqContext context)
                 LastUpdated = DateTime.Now
             };
 
-            context.DuQueues.Add(queueItem);
+            context.DuQueues.Add(newQueueItem);
 
             await context.SaveChangesAsync();
 
