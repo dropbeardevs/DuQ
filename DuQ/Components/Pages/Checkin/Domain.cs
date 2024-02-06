@@ -19,12 +19,8 @@ public class Domain(DuqContext context)
 
         try
         {
-            // DuQueueType? queueType = await context.DuQueueTypes
-            //     .Where(x => x.Name == model.QueueType)
-            //     .FirstOrDefaultAsync();
-
             DuQueueType? queueType = await context.DuQueueTypes
-                .Where(x => x.Name == "Campus ID Card")
+                .Where(x => x.Name == model.QueueType)
                 .FirstOrDefaultAsync();
 
             DuQueueStatus? queueStatus = await context.DuQueueStatuses
@@ -54,7 +50,23 @@ public class Domain(DuqContext context)
         catch (Exception ex)
         {
             Console.WriteLine(ex);
-            return false;
+            throw;
         }
+    }
+
+    public async Task<List<string>> GetQueueTypes()
+    {
+        try
+        {
+            List<string>? queueTypes = await context.DuQueueTypes.Select(x => x.Name).ToListAsync();
+
+            return queueTypes;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            throw;
+        }
+
     }
 }

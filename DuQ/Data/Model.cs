@@ -16,7 +16,6 @@ public class DuqContext : DbContext
     {
     }
 
-    #region Required
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Student>()
@@ -94,8 +93,6 @@ public class DuqContext : DbContext
         //     .Property(q => q.QueueStatus)
         //     .IsRequired();
     }
-    #endregion
-
 }
 
 public class Student

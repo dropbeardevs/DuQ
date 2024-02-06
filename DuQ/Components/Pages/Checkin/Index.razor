@@ -29,99 +29,36 @@
                                   Clearable="true"
                                   Counter="50"
                                   Class="px-4">
-                        Student ID
+                        First Name
                     </MudTextField>
                 </MudItem>
 
                 <MudItem xs="12">
-                    <MudSelect T="string"
+                    <MudSelect @bind-Value="Model!.QueueType"
+                               T="string"
                                Label="Service"
                                Variant="Variant.Outlined"
+                               Placeholder="Please Select"
                                AnchorOrigin="Origin.BottomCenter"
                                Class="px-4">
-                        <MudSelectItem T="string" Value="@("Campus ID Card")">Test</MudSelectItem>
-                        <MudSelectItem T="string" Value="@("Grad Cap and Gown")" />
-                        <MudSelectItem T="string" Value="@("Other")" />
+                        @foreach (string queueType in _queueTypes)
+                        {
+                            <MudSelectItem Value="@queueType">@queueType</MudSelectItem>
+                        }
                     </MudSelect>
                 </MudItem>
 
                 <MudItem xs="12" Class="py-16">
                     <div style="text-align:center;">
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               FullWidth="true"
-                               ButtonType="ButtonType.Submit"
-                               Style="width: 50%">Check In</MudButton>
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   FullWidth="true"
+                                   ButtonType="ButtonType.Submit"
+                                   Style="width: 50%">Check In</MudButton>
                     </div>
                 </MudItem>
 
             </EditForm>
         </MudItem>
-
     </MudGrid>
 }
-
-
-@* <FluentGrid Style="width: 90vw; margin: auto;" Justify="JustifyContent.Center"> *@
-@*     @if (_isCheckedIn is false) *@
-@*     { *@
-@*         <FluentGridItem xs="12" Style="margin-top: 10px; margin-bottom: 10px;"> *@
-@*             <FluentGridItem xs="12" Style="margin-top: 10px; margin-bottom: 20px;"> *@
-@*                 <FluentLabel Typo="Typography.Header" *@
-@*                              Alignment="HorizontalAlignment.Center" *@
-@*                              Weight="FontWeight.Bold">Student Services Checkin</FluentLabel> *@
-@*             </FluentGridItem> *@
-@* *@
-@*             <EditForm Model="@Model" OnValidSubmit="@SubmitAsync" FormName="StudentCheckin" novalidate> *@
-@*                 <DataAnnotationsValidator/> *@
-@*                 $1$ <FluentValidationSummary/> #1# *@
-@* *@
-@*                 <FluentGridItem xs="12" Style="margin-top: 10px; margin-bottom: 10px;"> *@
-@*                     <FluentTextField Name="Model.StudentID" *@
-@*                                      @bind-Value="Model!.StudentId" *@
-@*                                      Label="Student ID" *@
-@*                                      Style="width: 100%;" *@
-@*                                      Required/> *@
-@*                     <FluentValidationMessage For="@(() => Model!.StudentId)"/> *@
-@*                 </FluentGridItem> *@
-@* *@
-@*                 <FluentGridItem xs="12" Style="margin-top: 10px; margin-bottom: 10px;"> *@
-@*                     <FluentTextField Name="Model.FirstName" *@
-@*                                      @bind-Value="Model!.FirstName" *@
-@*                                      Label="First Name" *@
-@*                                      Style="width: 100%;" *@
-@*                                      Required/> *@
-@*                     <FluentValidationMessage For="@(() => Model!.FirstName)"/> *@
-@*                 </FluentGridItem> *@
-@* *@
-@*                 <FluentGridItem xs="12" Style="margin-top: 10px; margin-bottom: 50px;"> *@
-@*                     <FluentSelect name="Model.QueueType" *@
-@*                                   Id="QueueType" *@
-@*                                   @bind-Value="Model!.QueueType" *@
-@*                                   TOption="string" *@
-@*                                   Label="Service Type" *@
-@*                                   Style="width: 100%;" *@
-@*                                   Required> *@
-@*                         <FluentOption Value="">Select Service</FluentOption> *@
-@*                         <FluentOption Value="CampusIdCard">Campus ID Card</FluentOption> *@
-@*                         <FluentOption Value="CapAndGown">Cap & Gown</FluentOption> *@
-@*                         <FluentOption Value="Other">Other</FluentOption> *@
-@*                     </FluentSelect> *@
-@*                     <FluentValidationMessage For="@(() => Model!.QueueType)"/> *@
-@*                 </FluentGridItem> *@
-@*                 <FluentGridItem xs="12"> *@
-@*                     <FluentButton Type="ButtonType.Submit" *@
-@*                                   IconEnd="@(new Icons.Regular.Size20.GlobeLocation())" *@
-@*                                   Appearance="Appearance.Neutral" *@
-@*                                   Style="width: 100%; margin-bottom: 50px;">Check In</FluentButton> *@
-@*                 </FluentGridItem> *@
-@*             </EditForm> *@
-@*         </FluentGridItem> *@
-@*     } *@
-@* *@
-@*     else *@
-@*     { *@
-@*         <h1>Thank you for checking in @_myName</h1> *@
-@*     } *@
-@* *@
-@* </FluentGrid> *@

@@ -13,11 +13,20 @@
 }
 else
 {
-    <MudDataGrid Items="_queueItems">
-        <Columns>
-            <PropertyColumn Property="x => x.Student.StudentNo" Title="Student ID"/>
-            <PropertyColumn Property="x => x.Student.FirstName"/>
-            <PropertyColumn Property="x => x.QueueType.Name"/>
-        </Columns>
-    </MudDataGrid>
+    <MudGrid Class="justify-center">
+        <MudItem xs="12" Class="my-4">
+            <MudText Typo="Typo.h6" Align="Align.Center">Student Services Queue Status</MudText>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudDataGrid Items="_queueItems">
+                <Columns>
+                    <PropertyColumn Property="x => x.Student.StudentNo" Title="Student ID"/>
+                    <PropertyColumn Property="x => x.Student.FirstName" Title="First Name"/>
+                    <PropertyColumn Property="x => x.QueueType.Name" Title="Service"/>
+                    <PropertyColumn Property="x => TimeOnly.FromDateTime(x.CheckinTime)" Title="Check In Time"/>
+                </Columns>
+            </MudDataGrid>
+        </MudItem>
+    </MudGrid>
 }
