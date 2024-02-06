@@ -124,6 +124,27 @@ namespace DuQ.Migrations
                     { Guid.NewGuid(), "Others", DateTime.Now }
             );
 
+            migrationBuilder.InsertData(
+                table: "DuQueueStatuses",
+                columns: new[] { "Id", "Status", "LastUpdated" },
+                values: new object[]
+                    { Guid.NewGuid(), "In Queue", DateTime.Now }
+            );
+
+            migrationBuilder.InsertData(
+                table: "DuQueueStatuses",
+                columns: new[] { "Id", "Status", "LastUpdated" },
+                values: new object[]
+                    { Guid.NewGuid(), "Serving", DateTime.Now }
+            );
+
+            migrationBuilder.InsertData(
+                table: "DuQueueStatuses",
+                columns: new[] { "Id", "Status", "LastUpdated" },
+                values: new object[]
+                    { Guid.NewGuid(), "Finished", DateTime.Now }
+            );
+
         }
 
         /// <inheritdoc />

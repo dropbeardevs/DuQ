@@ -1,5 +1,6 @@
 using DuQ.Data;
 using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore;
 
 namespace DuQ.Components.Pages.Checkin;
 
@@ -10,27 +11,50 @@ public class Domain(DuqContext context)
         if (model is null)
             return false;
 
-        // Student student = new()
-        // {
-        //     FirstName = "Homer",
-        //     StudentNo = "Test1234",
-        //     LastUpdated = DateTime.Now
-        // };
-        //
-        //
-        //
-        // DuQueue testItem = new()
-        // {
-        //     Student = student,
-        //     QueueType = queueType,
-        //     QueueStatus = queueStatus,
-        //     LastUpdated = DateTime.Now
-        // };
+        Student student = new()
+        {
+            StudentNo = model.StudentId!,
+            FirstName = model.FirstName!,
+        };
 
-        // context.DuQueues.Add(testItem);
+        try
+        {
+            // DuQueueType? queueType = await context.DuQueueTypes
+            //     .Where(x => x.Name == model.QueueType)
+            //     .FirstOrDefaultAsync();
 
-        // await context.SaveChangesAsync();
+            DuQueueType? queueType = await context.DuQueueTypes
+                .Where(x => x.Name == "Campus ID Card")
+                .FirstOrDefaultAsync();
 
-        return true;
+            DuQueueStatus? queueStatus = await context.DuQueueStatuses
+                .Where(x => x.Status == "In Queue")
+                .FirstOrDefaultAsync();
+
+            if (queueType is null || queueStatus is null)
+            {
+                throw new Exception("Unable to get Queue Type or Queue Status");
+            }
+
+            DuQueue queueItem = new()
+            {
+                Student = student,
+                QueueType = queueType,
+                QueueStatus = queueStatus,
+                CheckinTime = DateTime.Now,
+                LastUpdated = DateTime.Now
+            };
+
+            context.DuQueues.Add(queueItem);
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return false;
+        }
     }
 }

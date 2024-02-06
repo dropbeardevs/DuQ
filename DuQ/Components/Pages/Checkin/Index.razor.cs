@@ -1,5 +1,6 @@
 using DuQ.Data;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 
 namespace DuQ.Components.Pages.Checkin;
 
@@ -9,15 +10,19 @@ public partial class Index
     private Domain? Domain { get; set; }
 
     [SupplyParameterFromForm]
-    public CheckinModel? Model { get; set; }
+    private CheckinModel? Model { get; set; }
 
-    private string? _myName;
     private bool _isCheckedIn;
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
         Model ??= new CheckinModel();
         _isCheckedIn = false;
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+
     }
 
     private async Task SubmitAsync()

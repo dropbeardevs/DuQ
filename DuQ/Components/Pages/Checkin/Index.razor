@@ -1,7 +1,66 @@
 @page "/checkin"
-@attribute [StreamRendering]
 
 <AntiforgeryToken/>
+
+@if (_isCheckedIn is false)
+{
+    <MudGrid Class="justify-center">
+        <MudItem xs="12" Class="my-4">
+            <MudText Typo="Typo.h6" Align="Align.Center">Student Services Checkin</MudText>
+        </MudItem>
+
+        <MudItem xs="12">
+            <EditForm Model="@Model" OnValidSubmit="@SubmitAsync" FormName="StudentCheckin" novalidate>
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="Model!.StudentId"
+                                  Label="Student ID"
+                                  Variant="Variant.Outlined"
+                                  AutoFocus="true"
+                                  Clearable="true"
+                                  Counter="20"
+                                  Class="px-4">
+                        Student ID
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudTextField @bind-Value="Model!.FirstName"
+                                  Label="First Name"
+                                  Variant="Variant.Outlined"
+                                  Clearable="true"
+                                  Counter="50"
+                                  Class="px-4">
+                        Student ID
+                    </MudTextField>
+                </MudItem>
+
+                <MudItem xs="12">
+                    <MudSelect T="string"
+                               Label="Service"
+                               Variant="Variant.Outlined"
+                               AnchorOrigin="Origin.BottomCenter"
+                               Class="px-4">
+                        <MudSelectItem T="string" Value="@("Campus ID Card")">Test</MudSelectItem>
+                        <MudSelectItem T="string" Value="@("Grad Cap and Gown")" />
+                        <MudSelectItem T="string" Value="@("Other")" />
+                    </MudSelect>
+                </MudItem>
+
+                <MudItem xs="12" Class="py-16">
+                    <div style="text-align:center;">
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               FullWidth="true"
+                               ButtonType="ButtonType.Submit"
+                               Style="width: 50%">Check In</MudButton>
+                    </div>
+                </MudItem>
+
+            </EditForm>
+        </MudItem>
+
+    </MudGrid>
+}
+
 
 @* <FluentGrid Style="width: 90vw; margin: auto;" Justify="JustifyContent.Center"> *@
 @*     @if (_isCheckedIn is false) *@
