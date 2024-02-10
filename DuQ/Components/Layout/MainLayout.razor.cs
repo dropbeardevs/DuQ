@@ -13,7 +13,8 @@ public partial class MainLayout
         {
             Primary = FullertonCollegeColor,
             AppbarBackground = FullertonCollegeColor,
-            Secondary = Colors.Yellow.Darken1
+            Secondary = Colors.Yellow.Darken1,
+            Tertiary = Colors.Red.Default
         }
     };
 }
