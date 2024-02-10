@@ -21,9 +21,9 @@ else
         <MudItem xs="12">
             <MudDataGrid Items="_queueItems">
                 <Columns>
-                    <PropertyColumn Property="x => x.Student.StudentNo" Title="Student ID"/>
-                    <PropertyColumn Property="x => x.Student.FirstName" Title="First Name"/>
-                    <PropertyColumn Property="x => x.QueueType.Name" Title="Service"/>
+                    <PropertyColumn Property="x => x.StudentNo" Title="Student ID"/>
+                    <PropertyColumn Property="x => x.StudentFirstName" Title="First Name"/>
+                    <PropertyColumn Property="x => x.QueueType" Title="Service"/>
                     <PropertyColumn Property="x => TimeOnly.FromDateTime(x.CheckinTime)" Title="Check In Time"/>
                 </Columns>
             </MudDataGrid>

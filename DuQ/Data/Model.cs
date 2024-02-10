@@ -146,3 +146,15 @@ public class CheckinModel
     [Required (ErrorMessage = "Service Type is required")]
     public string? QueueType { get; set; }
 }
+
+public class DuQueueDto
+{
+    public long QueueId { get; set; }
+    public string StudentNo { get; set; }
+    public string StudentFirstName { get; set; }
+    public string QueueType { get; set; }
+    public string QueueStatus { get; set; }
+    public DateTime CheckinTime { get; set; }
+    public DateTime CheckoutTime { get; set; }
+    public DateTime LastUpdated { get; set; }
+}

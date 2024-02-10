@@ -1,16 +1,14 @@
 using DuQ.Data;
 using Microsoft.AspNetCore.Components;
-using MudBlazor;
 
 namespace DuQ.Components.Pages.Status;
 
 public partial class Index
 {
+    [Inject]
+    private Status.Domain? Domain { get; set; }
     private bool IsLoading { get; set; }
-
-    [Inject] private Status.Domain? Domain { get; set; }
-
-    private List<DuQueue>? _queueItems;
+    private List<DuQueueDto>? _queueItems;
     private bool _isCancelled;
 
     protected override async void OnInitialized()
