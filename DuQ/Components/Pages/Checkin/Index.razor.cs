@@ -19,8 +19,6 @@ public partial class Index
 
     protected override async void OnInitialized()
     {
-
-
         _isCheckedIn = false;
     }
 

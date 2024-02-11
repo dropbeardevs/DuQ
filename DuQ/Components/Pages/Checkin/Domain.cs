@@ -1,6 +1,7 @@
 using DuQ.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DuQ.Components.Pages.Checkin;
 
@@ -13,6 +14,7 @@ public class Domain(DuqContext context)
 
         try
         {
+
             // Add logic to prevent students from adding themselves multiple times
 
             Student? student = await context.Students

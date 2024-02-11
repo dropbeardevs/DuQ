@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using DuQ.Data;
 using Microsoft.AspNetCore.Components;
 
@@ -8,7 +9,6 @@ public partial class Index
     [Inject]
     private Status.Domain? Domain { get; set; }
     private bool IsLoading { get; set; }
-    private List<DuQueueDto>? _queueItems;
     private bool _isCancelled;
 
     protected override async void OnInitialized()
@@ -22,9 +22,7 @@ public partial class Index
         IsLoading = true;
         StateHasChanged();
 
-        _queueItems = await Domain!.GetQueueItemsAsync();
-
-        var tempNAme = _queueItems.FirstOrDefault();
+        await Domain!.GetQueueItemsAsync();
 
         IsLoading = false;
         StateHasChanged();

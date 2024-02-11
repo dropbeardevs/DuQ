@@ -23,7 +23,7 @@ public partial class Index
         _isLoading = true;
         StateHasChanged();
 
-        _queueItems = await Domain!.GetQueueItemsAsync();
+        //_queueItems = await Domain!.GetQueueItemsAsync();
 
         var tempNAme = _queueItems.FirstOrDefault();
 
