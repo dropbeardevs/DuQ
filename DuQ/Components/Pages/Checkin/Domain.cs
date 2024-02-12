@@ -1,3 +1,4 @@
+using DuQ.Core;
 using DuQ.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
@@ -5,8 +6,18 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace DuQ.Components.Pages.Checkin;
 
-public class Domain(DuqContext context)
+public class Domain
 {
+    private readonly IDbContextFactory<DuqContext> _contextFactory;
+    private DbSaveNotifier _dbSaveNotifier;
+
+    public Domain(IDbContextFactory<DuqContext> contextFactory, DbSaveNotifier dbSaveNotifier)
+    {
+        _contextFactory = contextFactory;
+        _dbSaveNotifier = dbSaveNotifier;
+    }
+
+
     public async Task<bool> SaveStudent(CheckinModel? model)
     {
         if (model is null)
@@ -14,6 +25,9 @@ public class Domain(DuqContext context)
 
         try
         {
+            using DuqContext context = _contextFactory.CreateDbContext();
+
+            context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
 
             // Add logic to prevent students from adding themselves multiple times
 
@@ -79,10 +93,12 @@ public class Domain(DuqContext context)
         }
     }
 
-    public async Task<List<string>> GetQueueTypes()
+    public async Task<List<string>> GetQueueTypesAsync()
     {
         try
         {
+            using DuqContext context = _contextFactory.CreateDbContext();
+
             List<string>? queueTypes = await context.DuQueueTypes.Select(x => x.Name).ToListAsync();
 
             return queueTypes;

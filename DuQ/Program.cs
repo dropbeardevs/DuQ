@@ -1,4 +1,5 @@
 using DuQ.Components;
+using DuQ.Core;
 using DuQ.Data;
 using Microsoft.EntityFrameworkCore;
 using MudBlazor.Services;
@@ -13,11 +14,12 @@ string dbFileLocation = builder.Configuration.GetValue<string>("DbFileLocation")
 
 
 
-builder.Services.AddDbContext<DuqContext>(
+builder.Services.AddDbContextFactory<DuqContext>(
     options => options.UseSqlite($"Data Source={dbFileLocation}"));
 
 builder.Services.AddTransient<DuQ.Components.Pages.Checkin.Domain>();
 builder.Services.AddTransient<DuQ.Components.Pages.Status.Domain>();
+builder.Services.AddSingleton<DbSaveNotifier>();
 
 //builder.Services.AddHttpClient();
 builder.Services.AddMudServices();

@@ -25,7 +25,7 @@ public partial class Index
     protected override async Task OnParametersSetAsync()
     {
         Model ??= new CheckinModel();
-        _queueTypes = await Domain.GetQueueTypes();
+        _queueTypes = await Domain.GetQueueTypesAsync();
     }
 
     private async Task SubmitAsync()

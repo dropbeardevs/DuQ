@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using DuQ.Core;
 using DuQ.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,21 +7,25 @@ namespace DuQ.Components.Pages.Status;
 
 public class Domain
 {
-    public ObservableCollection<DuQueueDto> QueueItems { get; private set; } = [];
+    public ObservableCollection<DuQueueDto> QueueItems { get; set; } = [];
 
-    private readonly DuqContext _context;
+    private readonly IDbContextFactory<DuqContext> _contextFactory;
+    private DbSaveNotifier _dbSaveNotifier;
 
-    public Domain(DuqContext context)
+    public Domain(IDbContextFactory<DuqContext> contextFactory, DbSaveNotifier dbSaveNotifier)
     {
-        _context = context;
+        _contextFactory = contextFactory;
+        _dbSaveNotifier = dbSaveNotifier;
 
-        _context.SavedChanges += UpdateQueueItemsHandler;
+        //_dbSaveNotifier.OnDbSave += UpdateQueueItemsHandler;
 
     }
 
-    public async Task GetQueueItemsAsync()
+    public void GetQueueItems()
     {
-        var items = await _context.DuQueues
+        using DuqContext context = _contextFactory.CreateDbContext();
+
+        var items = context.DuQueues
             .Include(q => q.Student)
             .Include(q => q.QueueType)
             .Include(q => q.QueueStatus)
@@ -34,11 +39,16 @@ public class Domain
                 CheckinTime = item.CheckinTime,
                 CheckoutTime = item.CheckoutTime,
                 LastUpdated = item.LastUpdated
-            }).ToListAsync();
+            }).ToList();
 
         ObservableCollection<DuQueueDto> observableItems = new(items);
 
         QueueItems = observableItems;
+    }
+
+    private void UpdateQueueItemsHandler()
+    {
+        //GetQueueItems();
 
         var temp = new DuQueueDto()
         {
@@ -53,12 +63,9 @@ public class Domain
         };
 
         QueueItems.Add(temp);
-    }
 
-    public void UpdateQueueItemsHandler(object? sender, SavedChangesEventArgs eventArgs)
-    {
-        var task = GetQueueItemsAsync();
+        //task.Wait();
 
-        task.Wait();
+        //var items = context.DuQueueTypes.Select(x => x).ToList();
     }
 }

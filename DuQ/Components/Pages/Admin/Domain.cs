@@ -1,3 +1,4 @@
+using DuQ.Core;
 using DuQ.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -5,20 +6,27 @@ namespace DuQ.Components.Pages.Admin;
 
 public class Domain
 {
-    private readonly DuqContext _context;
+    private readonly IDbContextFactory<DuqContext> _contextFactory;
     private Queue<DuQueueDto> _queueItems;
+    private DbSaveNotifier _dbSaveNotifier;
 
-    public Domain(DuqContext context)
+    public Domain(IDbContextFactory<DuqContext> contextFactory, DbSaveNotifier dbSaveNotifier)
     {
-        _context = context;
+        _contextFactory = contextFactory;
+        _dbSaveNotifier = dbSaveNotifier;
+
         _queueItems = GetQueueItems();
     }
 
     private Queue<DuQueueDto> GetQueueItems()
     {
+        using DuqContext context = _contextFactory.CreateDbContext();
+
+        context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
+
         Queue<DuQueueDto> queue = new();
 
-        List<DuQueueDto> queueItems = _context.DuQueues
+        List<DuQueueDto> queueItems = context.DuQueues
             .Where(x => x.QueueStatus.Status == "In Queue")
             .OrderByDescending(x => x.CheckinTime)
             .Select(x => new DuQueueDto()
