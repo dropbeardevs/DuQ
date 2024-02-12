@@ -7,25 +7,18 @@ namespace DuQ.Components.Pages.Status;
 
 public class Domain
 {
-    public ObservableCollection<DuQueueDto> QueueItems { get; set; } = [];
-
     private readonly IDbContextFactory<DuqContext> _contextFactory;
-    private DbSaveNotifier _dbSaveNotifier;
 
-    public Domain(IDbContextFactory<DuqContext> contextFactory, DbSaveNotifier dbSaveNotifier)
+    public Domain(IDbContextFactory<DuqContext> contextFactory)
     {
         _contextFactory = contextFactory;
-        _dbSaveNotifier = dbSaveNotifier;
-
-        //_dbSaveNotifier.OnDbSave += UpdateQueueItemsHandler;
-
     }
 
-    public void GetQueueItems()
+    public async Task<List<DuQueueDto>> GetQueueItemsAsync()
     {
-        using DuqContext context = _contextFactory.CreateDbContext();
+        await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
-        var items = context.DuQueues
+        var items = await context.DuQueues
             .Include(q => q.Student)
             .Include(q => q.QueueType)
             .Include(q => q.QueueStatus)
@@ -39,33 +32,8 @@ public class Domain
                 CheckinTime = item.CheckinTime,
                 CheckoutTime = item.CheckoutTime,
                 LastUpdated = item.LastUpdated
-            }).ToList();
+            }).ToListAsync();
 
-        ObservableCollection<DuQueueDto> observableItems = new(items);
-
-        QueueItems = observableItems;
-    }
-
-    private void UpdateQueueItemsHandler()
-    {
-        //GetQueueItems();
-
-        var temp = new DuQueueDto()
-        {
-            QueueId = 999999,
-            StudentNo = "hahah",
-            StudentFirstName = "hahah",
-            QueueType = "hahah",
-            QueueStatus = "In Queue",
-            CheckinTime = DateTime.Now,
-            CheckoutTime = DateTime.Now,
-            LastUpdated = DateTime.Now,
-        };
-
-        QueueItems.Add(temp);
-
-        //task.Wait();
-
-        //var items = context.DuQueueTypes.Select(x => x).ToList();
+        return items;
     }
 }

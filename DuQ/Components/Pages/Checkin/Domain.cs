@@ -9,7 +9,7 @@ namespace DuQ.Components.Pages.Checkin;
 public class Domain
 {
     private readonly IDbContextFactory<DuqContext> _contextFactory;
-    private DbSaveNotifier _dbSaveNotifier;
+    private readonly DbSaveNotifier _dbSaveNotifier;
 
     public Domain(IDbContextFactory<DuqContext> contextFactory, DbSaveNotifier dbSaveNotifier)
     {
@@ -25,7 +25,7 @@ public class Domain
 
         try
         {
-            using DuqContext context = _contextFactory.CreateDbContext();
+            await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
             context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
 
@@ -97,7 +97,7 @@ public class Domain
     {
         try
         {
-            using DuqContext context = _contextFactory.CreateDbContext();
+            await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
             List<string>? queueTypes = await context.DuQueueTypes.Select(x => x.Name).ToListAsync();
 

@@ -3,47 +3,46 @@ using DuQ.Core;
 using DuQ.Data;
 using Microsoft.AspNetCore.Components;
 
+
 namespace DuQ.Components.Pages.Status;
 
-public partial class Index
+public partial class Index : IDisposable
 {
-    [Inject]
-    private Status.Domain? Domain { get; set; }
-
+    [Inject] private Status.Domain Domain { get; set; } = null!;
     [Inject] private DbSaveNotifier DbSaveNotifier { get; set; } = new();
+
+    private List<DuQueueDto> _queueItems;
     private bool IsLoading { get; set; }
-    private bool _isCancelled;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        _isCancelled = false;
+        DbSaveNotifier.OnDbSave += ReloadStatusItemsHandler;
 
-        DbSaveNotifier.OnDbSave += LoadStatusItemsHandler;
-
-        LoadStatusItems();
+        await LoadStatusItemsAsync();
     }
 
     public void Dispose()
     {
-        DbSaveNotifier.OnDbSave -= LoadStatusItemsHandler;
+        DbSaveNotifier.OnDbSave -= ReloadStatusItemsHandler;
     }
 
-    private void LoadStatusItems()
+    private async Task LoadStatusItemsAsync()
     {
         IsLoading = true;
-        StateHasChanged();
+        await this.InvokeAsync(StateHasChanged);
 
-        Domain!.GetQueueItems();
+        _queueItems = await Domain.GetQueueItemsAsync();
 
         IsLoading = false;
-        StateHasChanged();
+        await this.InvokeAsync(StateHasChanged);
     }
 
-    private void LoadStatusItemsHandler()
+    private async Task ReloadStatusItemsHandler()
     {
-        Domain!.GetQueueItems();
+        _queueItems = await Domain.GetQueueItemsAsync();
 
-        this.InvokeAsync(StateHasChanged);
+        await this.InvokeAsync(StateHasChanged);
+
     }
 
 }

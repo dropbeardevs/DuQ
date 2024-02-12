@@ -4,7 +4,7 @@ namespace DuQ.Core;
 
 public class DbSaveNotifier
 {
-    public event Action? OnDbSave;
+    public event Func<Task>? OnDbSave;
 
     public void NotifyDbSaved(object? sender, SavedChangesEventArgs eventArgs)
     {
