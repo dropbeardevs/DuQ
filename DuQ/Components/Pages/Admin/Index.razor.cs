@@ -7,15 +7,19 @@ public partial class Index
 {
     [Inject]
     private Domain Domain { get; set; } = default!;
+
+    private DuQueueDto? CampusIdCard { get; set; } = default!;
+    private DuQueueDto? CapAndGown { get; set; } = default!;
+    private DuQueueDto? Other { get; set; } = default!;
+
+    private List<DuQueueDto> _queueItems = null!;
+
     private bool _isLoading;
-    private bool _isCancelled;
-    private List<DuQueueDto>? _queueItems;
 
     protected override async void OnInitialized()
     {
-        _isLoading = false;
-        _isCancelled = false;
         await LoadStatusItems();
+        _isLoading = false;
     }
 
     private async Task LoadStatusItems()
@@ -23,9 +27,16 @@ public partial class Index
         _isLoading = true;
         StateHasChanged();
 
-        //_queueItems = await Domain!.GetQueueItemsAsync();
+        _queueItems = await Domain.GetQueueItemsAsync();
 
-        var tempNAme = _queueItems.FirstOrDefault();
+        CampusIdCard = _queueItems
+            .FirstOrDefault(x => x.QueueType == "Campus ID Card");
+
+        CapAndGown = _queueItems
+            .FirstOrDefault(x => x.QueueType == "Cap and Gown");
+
+        Other = _queueItems
+            .FirstOrDefault(x => x.QueueType == "Other");
 
         _isLoading = false;
         StateHasChanged();

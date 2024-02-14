@@ -17,7 +17,7 @@ public partial class Index
 
 
 
-    protected override async void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         _isCheckedIn = false;
     }

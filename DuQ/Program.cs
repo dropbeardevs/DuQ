@@ -19,6 +19,7 @@ builder.Services.AddDbContextFactory<DuqContext>(
 
 builder.Services.AddTransient<DuQ.Components.Pages.Checkin.Domain>();
 builder.Services.AddTransient<DuQ.Components.Pages.Status.Domain>();
+builder.Services.AddTransient<DuQ.Components.Pages.Admin.Domain>();
 builder.Services.AddSingleton<DbSaveNotifier>();
 
 //builder.Services.AddHttpClient();

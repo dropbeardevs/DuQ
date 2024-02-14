@@ -98,8 +98,8 @@ public class DuqContext : DbContext
 public class Student
 {
     public Guid Id { get; set; }
-    public string StudentNo { get; set; }
-    public string FirstName { get; set; }
+    public required string StudentNo { get; set; }
+    public required string FirstName { get; set; }
     public string? LastName { get; set; }
     public DateTime LastUpdated { get; set; }
 
@@ -109,26 +109,26 @@ public class Student
 public class DuQueueType
 {
     public Guid Id { get; set; }
-    public string Name { get; set; }
+    public string required Name { get; set; }
     public DateTime LastUpdated { get; set; }
 
-    public List<DuQueue>? Queues { get; set; }
+    public required List<DuQueue>? Queues { get; set; }
 }
 
 public class DuQueueStatus
 {
     public Guid Id { get; set; }
-    public string Status { get; set; }
+    public required string Status { get; set; }
     public DateTime LastUpdated { get; set; }
-    public List<DuQueue>? Queues { get; set; }
+    public required List<DuQueue>? Queues { get; set; }
 }
 
 public class DuQueue
 {
     public long QueueId { get; set; }
-    public Student Student { get; set; }
-    public DuQueueType QueueType { get; set; }
-    public DuQueueStatus QueueStatus { get; set; }
+    public required Student Student { get; set; }
+    public required DuQueueType QueueType { get; set; }
+    public required DuQueueStatus QueueStatus { get; set; }
     public DateTime CheckinTime { get; set; }
     public DateTime CheckoutTime { get; set; }
     public DateTime LastUpdated { get; set; }
@@ -150,10 +150,10 @@ public class CheckinModel
 public class DuQueueDto
 {
     public long QueueId { get; set; }
-    public string StudentNo { get; set; }
-    public string StudentFirstName { get; set; }
-    public string QueueType { get; set; }
-    public string QueueStatus { get; set; }
+    public required string StudentNo { get; set; }
+    public required string StudentFirstName { get; set; }
+    public required string QueueType { get; set; }
+    public required string QueueStatus { get; set; }
     public DateTime CheckinTime { get; set; }
     public DateTime CheckoutTime { get; set; }
     public DateTime LastUpdated { get; set; }

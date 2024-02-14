@@ -121,7 +121,7 @@ namespace DuQ.Migrations
                 table: "DuQueueTypes",
                 columns: new[] { "Id", "Name", "LastUpdated" },
                 values: new object[]
-                    { Guid.NewGuid(), "Others", DateTime.Now }
+                    { Guid.NewGuid(), "Other", DateTime.Now }
             );
 
             migrationBuilder.InsertData(

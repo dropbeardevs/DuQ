@@ -11,7 +11,7 @@ public partial class Index : IDisposable
     [Inject] private Status.Domain Domain { get; set; } = null!;
     [Inject] private DbSaveNotifier DbSaveNotifier { get; set; } = new();
 
-    private List<DuQueueDto> _queueItems;
+    private List<DuQueueDto> _queueItems = [];
     private bool IsLoading { get; set; }
 
     protected override async Task OnInitializedAsync()

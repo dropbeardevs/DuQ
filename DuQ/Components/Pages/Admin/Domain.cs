@@ -7,28 +7,23 @@ namespace DuQ.Components.Pages.Admin;
 public class Domain
 {
     private readonly IDbContextFactory<DuqContext> _contextFactory;
-    private Queue<DuQueueDto> _queueItems;
-    private DbSaveNotifier _dbSaveNotifier;
+    private readonly DbSaveNotifier _dbSaveNotifier;
 
     public Domain(IDbContextFactory<DuqContext> contextFactory, DbSaveNotifier dbSaveNotifier)
     {
         _contextFactory = contextFactory;
         _dbSaveNotifier = dbSaveNotifier;
-
-        _queueItems = GetQueueItems();
     }
 
-    private Queue<DuQueueDto> GetQueueItems()
+    public async Task<List<DuQueueDto>> GetQueueItemsAsync()
     {
-        using DuqContext context = _contextFactory.CreateDbContext();
+        await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
         context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
 
-        Queue<DuQueueDto> queue = new();
-
-        List<DuQueueDto> queueItems = context.DuQueues
+        List<DuQueueDto> queueItems = await context.DuQueues
             .Where(x => x.QueueStatus.Status == "In Queue")
-            .OrderByDescending(x => x.CheckinTime)
+            .OrderBy(x => x.CheckinTime)
             .Select(x => new DuQueueDto()
             {
                 QueueId = x.QueueId,
@@ -40,32 +35,8 @@ public class Domain
                 CheckoutTime = x.CheckoutTime,
                 LastUpdated = x.LastUpdated
             })
-            .ToList();
+            .ToListAsync();
 
-        foreach (var item in queueItems)
-        {
-            queue.Enqueue(item);
-        }
-
-        return queue;
+        return queueItems;
     }
-
-    // public async Task Task<List<DuQueueDto>> GetQueueItemsAsync()
-    // {
-    //     var items = await context.DuQueues
-    //         .Include(q => q.Student)
-    //         .Include(q => q.QueueType)
-    //         .Include(q => q.QueueStatus)
-    //         .Select(item => new DuQueueDto()
-    //         {
-    //             QueueId = item.QueueId,
-    //             StudentNo = item.Student.StudentNo,
-    //             StudentFirstName = item.Student.FirstName,
-    //             QueueType = item.QueueType.Name,
-    //             QueueStatus = item.QueueStatus.Status,
-    //             CheckinTime = item.CheckinTime,
-    //             CheckoutTime = item.CheckoutTime,
-    //             LastUpdated = item.LastUpdated
-    //         }).ToListAsync();
-    // }
 }
