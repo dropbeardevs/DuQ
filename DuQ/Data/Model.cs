@@ -75,10 +75,10 @@ public class DuqContext : DbContext
             .IsRequired();
 
         modelBuilder.Entity<DuQueue>()
-            .HasKey(q => q.QueueId);
+            .HasKey(q => q.Id);
 
         modelBuilder.Entity<DuQueue>()
-            .Property(q => q.QueueId)
+            .Property(q => q.Id)
             .IsRequired();
 
         modelBuilder.Entity<DuQueue>()
@@ -103,16 +103,16 @@ public class Student
     public string? LastName { get; set; }
     public DateTime LastUpdated { get; set; }
 
-    public List<DuQueue>? Queues { get; set; }
+    public List<DuQueue>? DuQueues { get; } = [];
 }
 
 public class DuQueueType
 {
     public Guid Id { get; set; }
-    public string required Name { get; set; }
+    public required string Name { get; set; }
     public DateTime LastUpdated { get; set; }
 
-    public required List<DuQueue>? Queues { get; set; }
+    public List<DuQueue>? DuQueues { get; } = [];
 }
 
 public class DuQueueStatus
@@ -120,12 +120,13 @@ public class DuQueueStatus
     public Guid Id { get; set; }
     public required string Status { get; set; }
     public DateTime LastUpdated { get; set; }
-    public required List<DuQueue>? Queues { get; set; }
+
+    public List<DuQueue>? DuQueues { get; } = [];
 }
 
 public class DuQueue
 {
-    public long QueueId { get; set; }
+    public Guid Id { get; set; }
     public required Student Student { get; set; }
     public required DuQueueType QueueType { get; set; }
     public required DuQueueStatus QueueStatus { get; set; }
@@ -149,7 +150,7 @@ public class CheckinModel
 
 public class DuQueueDto
 {
-    public long QueueId { get; set; }
+    public Guid QueueId { get; set; }
     public required string StudentNo { get; set; }
     public required string StudentFirstName { get; set; }
     public required string QueueType { get; set; }
@@ -157,4 +158,11 @@ public class DuQueueDto
     public DateTime CheckinTime { get; set; }
     public DateTime CheckoutTime { get; set; }
     public DateTime LastUpdated { get; set; }
+}
+
+public class AdminDto
+{
+    public Guid Id { get; set; }
+    public required string StudentNo { get; set; }
+    public required string StudentFirstName { get; set; }
 }

@@ -19,9 +19,9 @@ namespace DuQ.Migrations
 
             modelBuilder.Entity("DuQ.Data.DuQueue", b =>
                 {
-                    b.Property<long>("QueueId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("CheckinTime")
                         .HasColumnType("TEXT");
@@ -41,7 +41,7 @@ namespace DuQ.Migrations
                     b.Property<Guid>("StudentId")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("QueueId");
+                    b.HasKey("Id");
 
                     b.HasIndex("QueueStatusId");
 
@@ -120,19 +120,19 @@ namespace DuQ.Migrations
             modelBuilder.Entity("DuQ.Data.DuQueue", b =>
                 {
                     b.HasOne("DuQ.Data.DuQueueStatus", "QueueStatus")
-                        .WithMany("Queues")
+                        .WithMany("DuQueues")
                         .HasForeignKey("QueueStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DuQ.Data.DuQueueType", "QueueType")
-                        .WithMany("Queues")
+                        .WithMany("DuQueues")
                         .HasForeignKey("QueueTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("DuQ.Data.Student", "Student")
-                        .WithMany("Queues")
+                        .WithMany("DuQueues")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -146,17 +146,17 @@ namespace DuQ.Migrations
 
             modelBuilder.Entity("DuQ.Data.DuQueueStatus", b =>
                 {
-                    b.Navigation("Queues");
+                    b.Navigation("DuQueues");
                 });
 
             modelBuilder.Entity("DuQ.Data.DuQueueType", b =>
                 {
-                    b.Navigation("Queues");
+                    b.Navigation("DuQueues");
                 });
 
             modelBuilder.Entity("DuQ.Data.Student", b =>
                 {
-                    b.Navigation("Queues");
+                    b.Navigation("DuQueues");
                 });
 #pragma warning restore 612, 618
         }

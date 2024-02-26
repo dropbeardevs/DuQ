@@ -56,8 +56,7 @@ namespace DuQ.Migrations
                 name: "DuQueues",
                 columns: table => new
                 {
-                    QueueId = table.Column<long>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     StudentId = table.Column<Guid>(type: "TEXT", nullable: false),
                     QueueTypeId = table.Column<Guid>(type: "TEXT", nullable: false),
                     QueueStatusId = table.Column<Guid>(type: "TEXT", nullable: false),
@@ -67,7 +66,7 @@ namespace DuQ.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DuQueues", x => x.QueueId);
+                    table.PrimaryKey("PK_DuQueues", x => x.Id);
                     table.ForeignKey(
                         name: "FK_DuQueues_DuQueueStatuses_QueueStatusId",
                         column: x => x.QueueStatusId,
@@ -107,42 +106,42 @@ namespace DuQ.Migrations
                 table: "DuQueueTypes",
                 columns: new[] { "Id", "Name", "LastUpdated" },
                 values: new object[]
-                    { Guid.NewGuid(), "Campus ID Card", DateTime.Now }
+                        { Guid.NewGuid(), "Campus ID Card", DateTime.Now }
             );
 
             migrationBuilder.InsertData(
                 table: "DuQueueTypes",
                 columns: new[] { "Id", "Name", "LastUpdated" },
                 values: new object[]
-                    { Guid.NewGuid(), "Cap and Gown", DateTime.Now }
+                        { Guid.NewGuid(), "Cap and Gown", DateTime.Now }
             );
 
             migrationBuilder.InsertData(
                 table: "DuQueueTypes",
                 columns: new[] { "Id", "Name", "LastUpdated" },
                 values: new object[]
-                    { Guid.NewGuid(), "Other", DateTime.Now }
+                        { Guid.NewGuid(), "Other", DateTime.Now }
             );
 
             migrationBuilder.InsertData(
                 table: "DuQueueStatuses",
                 columns: new[] { "Id", "Status", "LastUpdated" },
                 values: new object[]
-                    { Guid.NewGuid(), "In Queue", DateTime.Now }
+                        { Guid.NewGuid(), "In Queue", DateTime.Now }
             );
 
             migrationBuilder.InsertData(
                 table: "DuQueueStatuses",
                 columns: new[] { "Id", "Status", "LastUpdated" },
                 values: new object[]
-                    { Guid.NewGuid(), "Serving", DateTime.Now }
+                        { Guid.NewGuid(), "Serving", DateTime.Now }
             );
 
             migrationBuilder.InsertData(
                 table: "DuQueueStatuses",
                 columns: new[] { "Id", "Status", "LastUpdated" },
                 values: new object[]
-                    { Guid.NewGuid(), "Finished", DateTime.Now }
+                        { Guid.NewGuid(), "Finished", DateTime.Now }
             );
 
         }

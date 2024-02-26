@@ -24,7 +24,7 @@ public class Domain
             .Include(q => q.QueueStatus)
             .Select(item => new DuQueueDto()
             {
-                QueueId = item.QueueId,
+                QueueId = item.Id,
                 StudentNo = item.Student.StudentNo,
                 StudentFirstName = item.Student.FirstName,
                 QueueType = item.QueueType.Name,
