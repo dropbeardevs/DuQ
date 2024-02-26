@@ -400,3 +400,5 @@ FodyWeavers.xsd
 duq.db
 .DS_Store
 .idea/
+duq.db-shm
+duq.db-wal
