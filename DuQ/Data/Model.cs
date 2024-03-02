@@ -12,6 +12,8 @@ public class DuqContext : DbContext
     public DbSet<DuQueueStatus> DuQueueStatuses { get; set; }
     public DbSet<DuQueue> DuQueues { get; set; }
 
+    public DbSet<DuQueuePosition> DuQueuePositions { get; set; }
+
     public DuqContext(DbContextOptions<DuqContext> options) : base(options)
     {
     }
@@ -85,6 +87,18 @@ public class DuqContext : DbContext
             .Property(q => q.LastUpdated)
             .IsRequired();
 
+
+        modelBuilder.Entity<DuQueuePosition>()
+                    .HasKey(q => q.Id);
+
+        modelBuilder.Entity<DuQueuePosition>()
+                    .Property(q => q.Id)
+                    .IsRequired();
+
+        modelBuilder.Entity<DuQueuePosition>()
+                    .Property(q => q.LastUpdated)
+                    .IsRequired();
+
         // modelBuilder.Entity<DuQueue>()
         //     .Property(q => q.QueueType)
         //     .IsRequired();
@@ -132,6 +146,17 @@ public class DuQueue
     public required DuQueueStatus QueueStatus { get; set; }
     public DateTime CheckinTime { get; set; }
     public DateTime CheckoutTime { get; set; }
+    public DateTime LastUpdated { get; set; }
+}
+
+public class DuQueuePosition
+{
+    public Guid Id { get; set; }
+    public string Position { get; set; }
+    public Guid? DuQueueId { get; set; }
+    public DuQueue? DuQueue { get; set; }
+    public Guid? DuQueueTypeId { get; set; }
+    public DuQueueType DuQueueType { get; set; }
     public DateTime LastUpdated { get; set; }
 }
 

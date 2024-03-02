@@ -24,8 +24,7 @@ public class Domain
 
         AdminDto? adminQueueItem = await context.DuQueues
                                                .Where(x => x.QueueType.Id == queueTypeId)
-                                               .Where(x => x.QueueStatus.Status == "Serving")
-                                               .OrderByDescending(x => x.CheckinTime)
+                                               .Where(x => x.Id == queueItemId)
                                                .Select(x => new AdminDto()
                                                             {
                                                                 StudentNo = x.Student.StudentNo,
@@ -41,19 +40,19 @@ public class Domain
     /// </summary>
     /// <param name="queueItemId">Current ID of queue item</param>
     /// <returns>Guid of previous item</returns>
-    public async Task<Guid> GetNextQueueGuid(Guid queueItemId)
-    {
-
-    }
+    // public async Task<Guid> GetNextQueueGuid(Guid queueItemId)
+    // {
+    //
+    // }
 
     /// <summary>
     ///
     /// </summary>
     /// <param name="queueItemId">ID of previous queue item</param>
-    public async Task GetPreviousQueueItem(Guid queueItemId)
-    {
-
-    }
+    // public async Task GetPreviousQueueItem(Guid queueItemId)
+    // {
+    //
+    // }
 
     public async Task<Queue<DuQueueDto>> GetQueueItemsAsync()
     {

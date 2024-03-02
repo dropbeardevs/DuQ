@@ -27,7 +27,7 @@ public partial class Index
         _isLoading = true;
         StateHasChanged();
 
-        _queueItems = await Domain.GetQueueItemsAsync();
+        //_queueItems = await Domain.GetQueueItemsAsync();
 
         CampusIdCard = _queueItems
             .FirstOrDefault(x => x.QueueType == "Campus ID Card");
