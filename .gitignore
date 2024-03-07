@@ -397,8 +397,8 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-duq.db
+DuQ/duq.db
 .DS_Store
 .idea/
-duq.db-shm
-duq.db-wal
+DuQ/duq.db-shm
+DuQ/duq.db-wal
