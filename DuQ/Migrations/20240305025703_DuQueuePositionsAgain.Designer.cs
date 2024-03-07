@@ -3,6 +3,7 @@ using System;
 using DuQ.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DuQ.Migrations
 {
     [DbContext(typeof(DuqContext))]
-    partial class DuqContextModelSnapshot : ModelSnapshot
+    [Migration("20240305025703_DuQueuePositionsAgain")]
+    partial class DuQueuePositionsAgain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");

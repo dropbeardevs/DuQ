@@ -41,4 +41,9 @@ public partial class Index
         _isLoading = false;
         StateHasChanged();
     }
+
+    private async Task Refresh()
+    {
+        await Domain.RefreshAdminItemsAsync();
+    }
 }

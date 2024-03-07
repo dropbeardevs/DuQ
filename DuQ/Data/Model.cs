@@ -11,6 +11,7 @@ public class DuqContext : DbContext
     public DbSet<DuQueueType> DuQueueTypes { get; set; }
     public DbSet<DuQueueStatus> DuQueueStatuses { get; set; }
     public DbSet<DuQueue> DuQueues { get; set; }
+    public DbSet<DuQueuePosition> DuQueuePositions { get; set; }
 
     public DuqContext(DbContextOptions<DuqContext> options) : base(options)
     {
@@ -85,13 +86,16 @@ public class DuqContext : DbContext
             .Property(q => q.LastUpdated)
             .IsRequired();
 
-        // modelBuilder.Entity<DuQueue>()
-        //     .Property(q => q.QueueType)
-        //     .IsRequired();
+        modelBuilder.Entity<DuQueuePosition>()
+                    .HasKey(q => q.Id);
 
-        // modelBuilder.Entity<DuQueue>()
-        //     .Property(q => q.QueueStatus)
-        //     .IsRequired();
+        modelBuilder.Entity<DuQueuePosition>()
+                    .Property(q => q.Id)
+                    .IsRequired();
+
+        modelBuilder.Entity<DuQueuePosition>()
+                    .Property(q => q.LastUpdated)
+                    .IsRequired();
     }
 }
 
@@ -101,29 +105,24 @@ public class Student
     public required string StudentNo { get; set; }
     public required string FirstName { get; set; }
     public string? LastName { get; set; }
-    public DateTime LastUpdated { get; set; }
-
     public List<DuQueue>? DuQueues { get; } = [];
+    public DateTime LastUpdated { get; set; }
 }
 
 public class DuQueueType
 {
     public Guid Id { get; set; }
     public required string Name { get; set; }
-    public Guid? Previous { get; set; }
-    public Guid? Current { get; set; }
-    public Guid? Next { get; set; }
+    public DuQueuePosition? QueuePosition { get; set; }
     public DateTime LastUpdated { get; set; }
-    public List<DuQueue>? DuQueues { get; } = [];
 }
 
 public class DuQueueStatus
 {
     public Guid Id { get; set; }
     public required string Status { get; set; }
-    public DateTime LastUpdated { get; set; }
-
     public List<DuQueue>? DuQueues { get; } = [];
+    public DateTime LastUpdated { get; set; }
 }
 
 public class DuQueue
@@ -132,8 +131,19 @@ public class DuQueue
     public required Student Student { get; set; }
     public required DuQueueType QueueType { get; set; }
     public required DuQueueStatus QueueStatus { get; set; }
+    public DuQueuePosition? QueuePosition { get; set; }
     public DateTime CheckinTime { get; set; }
     public DateTime CheckoutTime { get; set; }
+    public DateTime LastUpdated { get; set; }
+}
+
+public class DuQueuePosition
+{
+    public Guid Id { get; set; }
+    public required DuQueueType QueueType { get; set; }
+    public DuQueue? Previous { get; set; }
+    public DuQueue? Current { get; set; }
+    public DuQueue? Next { get; set; }
     public DateTime LastUpdated { get; set; }
 }
 
@@ -164,7 +174,11 @@ public class DuQueueDto
 
 public class AdminDto
 {
-    public Guid Id { get; set; }
+    public Guid QueueTypeId { get; set; }
+    public required string QueueName { get; set; }
     public required string StudentNo { get; set; }
     public required string StudentFirstName { get; set; }
+    public Guid? Previous { get; set; }
+    public Guid? Current { get; set; }
+    public Guid? Next { get; set; }
 }

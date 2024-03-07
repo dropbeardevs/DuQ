@@ -16,24 +16,24 @@ public class Domain
     }
 
 
-    public async Task<AdminDto>? GetQueueItemAsync(Guid queueTypeId, Guid queueItemId)
-    {
-        await using DuqContext context = await _contextFactory.CreateDbContextAsync();
-
-        context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
-
-        AdminDto? adminQueueItem = await context.DuQueues
-                                               .Where(x => x.QueueType.Id == queueTypeId)
-                                               .Where(x => x.Id == queueItemId)
-                                               .Select(x => new AdminDto()
-                                                            {
-                                                                StudentNo = x.Student.StudentNo,
-                                                                StudentFirstName = x.Student.FirstName,
-                                                            })
-                                               .FirstOrDefaultAsync();
-
-        return adminQueueItem!;
-    }
+    // public async Task<AdminDto>? GetQueueItemAsync(Guid queueTypeId, Guid queueItemId)
+    // {
+    //     await using DuqContext context = await _contextFactory.CreateDbContextAsync();
+    //
+    //     context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
+    //
+    //     AdminDto? adminQueueItem = await context.DuQueues
+    //                                            .Where(x => x.QueueType.Id == queueTypeId)
+    //                                            .Where(x => x.Id == queueItemId)
+    //                                            .Select(x => new AdminDto()
+    //                                                         {
+    //                                                             StudentNo = x.Student.StudentNo,
+    //                                                             StudentFirstName = x.Student.FirstName,
+    //                                                         })
+    //                                            .FirstOrDefaultAsync();
+    //
+    //     return adminQueueItem!;
+    // }
 
     /// <summary>
     ///
@@ -54,31 +54,63 @@ public class Domain
     //
     // }
 
-    public async Task<Queue<DuQueueDto>> GetQueueItemsAsync()
+    public async Task<List<AdminDto>> GetAdminItemsAsync()
+    {
+        //await RefreshAdminItemsAsync();
+
+        await using DuqContext context = await _contextFactory.CreateDbContextAsync();
+
+        List<AdminDto>? adminItems = await context.DuQueuePositions.Select(x => new AdminDto
+                                                                           {
+                                                                               StudentNo = x.Current.Student.StudentNo,
+                                                                               StudentFirstName = x.Current.Student.FirstName,
+                                                                               QueueName = x.Current.QueueType.Name
+                                                                      }).ToListAsync();
+
+        return adminItems;
+    }
+
+    public async Task RefreshAdminItemsAsync()
     {
         await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
         context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
 
-        List<DuQueueDto> queueItems = await context.DuQueues
-            .Where(x => x.QueueStatus.Status == "In Queue")
-            .OrderBy(x => x.CheckinTime)
-            .Select(x => new DuQueueDto()
-            {
-                QueueId = x.Id,
-                StudentNo = x.Student.StudentNo,
-                StudentFirstName = x.Student.FirstName,
-                QueueType = x.QueueType.Name,
-                QueueStatus = x.QueueStatus.Status,
-                CheckinTime = x.CheckinTime,
-                CheckoutTime = x.CheckoutTime,
-                LastUpdated = x.LastUpdated
-            })
-            .ToListAsync();
+        // List<DuQueue> currentQueueItems = await context.DuQueues
+        //                                                .Where(x => x.QueueStatus.Status == "In Queue")
+        //                                                .Select(x => x)
+        //                                                .ToListAsync();
 
 
-        Queue<DuQueueDto> queue = new(queueItems);
+        DuQueuePosition campusIdCardCurrent = await context.DuQueuePositions
+                                                           .Where(x => x.QueueType.Name == "Campus ID Card")
+                                                           .Select(x => x)
+                                                           .FirstAsync();
 
-        return queue;
+        Guid campusIdCardCurrentId = await context.DuQueues
+                                        .Where(x => x.QueueType.Name == "Campus ID Card")
+                                        .Where(x => x.QueueStatus.Status == "Serving")
+                                        .Select(x => x.Id)
+                                        .FirstAsync();
+
+        campusIdCardCurrent.Current.Id = campusIdCardCurrentId;
+
+        Guid capAndGownCurrentId = await context.DuQueues
+                                                .Where(x => x.QueueType.Name == "Cap and Gown")
+                                                .Where(x => x.QueueStatus.Status == "Serving")
+                                                .Select(x => x.Id)
+                                                .FirstAsync();
+
+        Guid otherCurrentId = await context.DuQueues
+                                           .Where(x => x.QueueType.Name == "Other")
+                                           .Where(x => x.QueueStatus.Status == "Serving")
+                                           .Select(x => x.Id)
+                                           .FirstAsync();
+
+
+        List<DuQueuePosition> queuePositions = await context.DuQueuePositions.Select(x => x).ToListAsync();
+
+
+
     }
 }
