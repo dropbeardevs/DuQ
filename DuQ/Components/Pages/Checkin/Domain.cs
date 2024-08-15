@@ -51,6 +51,9 @@ public class Domain
                     queueItem.QueueLocation = await context.DuQueueLocations
                         .Where(x => x.Location == model.Location)
                         .FirstAsync();
+                    queueItem.QueueStatus = await context.DuQueueStatuses
+                                                           .Where(x => x.Status == "In Queue")
+                                                           .FirstAsync();
 
                     await context.SaveChangesAsync();
 

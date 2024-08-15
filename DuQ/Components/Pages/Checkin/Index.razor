@@ -75,3 +75,16 @@
         </MudItem>
     </MudGrid>
 }
+else
+{
+    <MudItem xs="12" Class="py-16">
+        <MudText Typo="Typo.h4" Align="Align.Center">You have checked in</MudText>
+    </MudItem>
+    <MudItem xs="12" Class="py-16" Style="text-align: center">
+        <MudButton OnClick="@GoBack"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   FullWidth="true"
+                   Style="width: 50%">Go Back</MudButton>
+    </MudItem>
+}

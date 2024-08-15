@@ -3,7 +3,7 @@ namespace DuQ.Models.Core;
 public class AdminDto
 {
     public Guid QueueId { get; set; }
-    public Guid QueueLocationId { get; set; }
+    public required string QueueLocation { get; set; }
     public required string StudentFirstName { get; set; }
     public required string StudentLastName { get; set; }
     public required string StudentContactDetails { get; set; }

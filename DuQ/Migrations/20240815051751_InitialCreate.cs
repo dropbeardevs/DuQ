@@ -139,6 +139,13 @@ namespace DuQ.Migrations
                         { Guid.NewGuid(), "Finished", DateTime.UtcNow }
             );
 
+            migrationBuilder.InsertData(
+                table: "du_queue_statuses",
+                columns: new[] { "id", "status", "modified_utc" },
+                values: new object[]
+                        { Guid.NewGuid(), "Deleted", DateTime.UtcNow }
+            );
+
             // du_queue_locations
             migrationBuilder.InsertData(
                 table: "du_queue_locations",

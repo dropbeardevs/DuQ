@@ -2,143 +2,72 @@
 
 <AntiforgeryToken/>
 
+@if (_isLoading)
+
+{
+<MudGrid Justify="Justify.Center" Style="height: 80vh; align-items: center;">
+    <MudItem>
+        <MudProgressCircular Color="Color.Default" Size="Size.Large" Indeterminate="true"/>
+    </MudItem>
+</MudGrid>
+}
+else
+{
 <MudGrid Class="justify-center">
-@*     <MudItem xs="12" Class="my-4"> *@
-@*         <MudText Typo="Typo.h5" Align="Align.Center">Next In Queue</MudText> *@
-@*     </MudItem> *@
-@* *@
-@*     <MudItem xs="12" Class="d-flex align-center justify-center mx-8 py-4"> *@
-@*         <MudItem xs="2"> *@
-@*             <MudText Typo="Typo.h6" Align="Align.Center">Queue</MudText> *@
-@*         </MudItem> *@
-@*         <MudItem xs="3"> *@
-@*             <MudText Typo="Typo.h6" Align="Align.Center">Student No</MudText> *@
-@*         </MudItem> *@
-@*         <MudItem xs="3"> *@
-@*             <MudText Typo="Typo.h6" Align="Align.Center">First Name</MudText> *@
-@*         </MudItem> *@
-@*         <MudItem xs="2"> *@
-@*         </MudItem> *@
-@*         <MudItem xs="2"> *@
-@*         </MudItem> *@
-@*     </MudItem> *@
-
-    @* <MudItem xs="12"> *@
-    @*     <MudPaper Class="d-flex align-center justify-center mx-8 py-4"> *@
-    @*         <MudItem xs="2"> *@
-    @*             <MudText Typo="Typo.h6" Align="Align.Center">Campus ID Card</MudText> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="3"> *@
-    @*             <MudText Typo="Typo.body1" Align="Align.Center">@CampusIdCard!.StudentNo</MudText> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="3"> *@
-    @*             <MudText Typo="Typo.body1" Align="Align.Center">@CampusIdCard!.StudentFirstName</MudText> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="2"> *@
-    @*             <div style="text-align:center;"> *@
-    @*                 <MudButton Style="width: 80%; height: 50px;" *@
-    @*                            Variant="Variant.Filled" *@
-    @*                            Color="Color.Primary" *@
-    @*                            ButtonType="ButtonType.Button"> *@
-    @*                     Serve *@
-    @*                 </MudButton> *@
-    @*             </div> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="2"> *@
-    @*             <div style="text-align:center;"> *@
-    @*                 <MudButton Style="width: 80%; height: 50px;" *@
-    @*                            Variant="Variant.Filled" *@
-    @*                            Color="Color.Tertiary" *@
-    @*                            ButtonType="ButtonType.Button"> *@
-    @*                     Undo *@
-    @*                 </MudButton> *@
-    @*             </div> *@
-    @*         </MudItem> *@
-    @*     </MudPaper> *@
-    @* </MudItem> *@
-    @* *@
-    @* <MudItem xs="12"> *@
-    @*     <MudPaper Class="d-flex align-center justify-center mx-8 py-4"> *@
-    @*         <MudItem xs="2"> *@
-    @*             <MudText Typo="Typo.h6" Align="Align.Center">Cap and Gown</MudText> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="3"> *@
-    @*             <MudText Typo="Typo.body1" Align="Align.Center">@CapAndGown!.StudentNo</MudText> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="3"> *@
-    @*             <MudText Typo="Typo.body1" Align="Align.Center">@CapAndGown!.StudentFirstName</MudText> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="2"> *@
-    @*             <div style="text-align:center;"> *@
-    @*                 <MudButton Style="width: 80%; height: 50px;" *@
-    @*                            Variant="Variant.Filled" *@
-    @*                            Color="Color.Primary" *@
-    @*                            ButtonType="ButtonType.Button"> *@
-    @*                     Serve *@
-    @*                 </MudButton> *@
-    @*             </div> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="2"> *@
-    @*             <div style="text-align:center;"> *@
-    @*                 <MudButton Style="width: 80%; height: 50px;" *@
-    @*                            Variant="Variant.Filled" *@
-    @*                            Color="Color.Tertiary" *@
-    @*                            ButtonType="ButtonType.Button"> *@
-    @*                     Undo *@
-    @*                 </MudButton> *@
-    @*             </div> *@
-    @*         </MudItem> *@
-    @*     </MudPaper> *@
-    @* </MudItem> *@
-    @* *@
-    @* <MudItem xs="12"> *@
-    @*     <MudPaper Class="d-flex align-center justify-center mx-8 py-4"> *@
-    @*         <MudItem xs="2"> *@
-    @*             <MudText Typo="Typo.h6" Align="Align.Center">Other</MudText> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="3"> *@
-    @*             <MudText Typo="Typo.body1" Align="Align.Center">@Other!.StudentNo</MudText> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="3"> *@
-    @*             <MudText Typo="Typo.body1" Align="Align.Center">@Other!.StudentFirstName</MudText> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="2"> *@
-    @*             <div style="text-align:center;"> *@
-    @*                 <MudButton Style="width: 80%; height: 50px;" *@
-    @*                            Variant="Variant.Filled" *@
-    @*                            Color="Color.Primary" *@
-    @*                            ButtonType="ButtonType.Button"> *@
-    @*                     Serve *@
-    @*                 </MudButton> *@
-    @*             </div> *@
-    @*         </MudItem> *@
-    @*         <MudItem xs="2"> *@
-    @*             <div style="text-align:center;"> *@
-    @*                 <MudButton Style="width: 80%; height: 50px;" *@
-    @*                            Variant="Variant.Filled" *@
-    @*                            Color="Color.Tertiary" *@
-    @*                            ButtonType="ButtonType.Button"> *@
-    @*                     Undo *@
-    @*                 </MudButton> *@
-    @*             </div> *@
-    @*         </MudItem> *@
-    @*     </MudPaper> *@
-    @* </MudItem> *@
-
-    <MudItem xs="12">
-        <MudPaper Class="d-flex align-center justify-center mx-8 py-4">
-            <MudItem xs="2">
-                <div style="text-align:center;">
-                    <MudButton Style="width: 80%; height: 50px;"
-                               Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               ButtonType="ButtonType.Button"
-                               @onclick="@Refresh">
-                        Refresh
-                    </MudButton>
-                </div>
-            </MudItem>
-        </MudPaper>
+    <MudItem xs="12" Class="my-4">
+        <MudText Typo="Typo.h6" Align="Align.Center">Student Services Queue Admin</MudText>
     </MudItem>
 
+    @if (_currentlyServing is not null)
+    {
+        <MudItem xs="12">
+            <MudText Typo="Typo.h6" Align="Align.Center">Currently Serving: @_currentlyServing.StudentFirstName @_currentlyServing.StudentLastName</MudText>
+        </MudItem>
+    }
+
+    <MudItem xs="4">
+        <MudSelect @bind-Value="Model!.Location"
+                   T="string"
+                   Label="Location"
+                   Variant="Variant.Outlined"
+                   Placeholder="Please Select"
+                   AnchorOrigin="Origin.BottomCenter"
+                   Class="px-4">
+            @if (_queueLocations.Count > 0)
+            {
+                foreach (string queueLocation in _queueLocations)
+                {
+                    <MudSelectItem Value="@queueLocation">@queueLocation</MudSelectItem>
+                }
+            }
+        </MudSelect>
+    </MudItem>
+
+    <MudItem xs="12">
+        <MudDataGrid Items="@_queueItems" Filterable="true" QuickFilter="@QuickFilter">
+            <Columns>
+                <PropertyColumn Property="x => x.QueueLocation" Title="Queue Location"/>
+                <PropertyColumn Property="x => x.CheckinTime" Title="Check In Time" />
+                <PropertyColumn Property="x => x.StudentFirstName" Title="First Name" />
+                <PropertyColumn Property="x => x.StudentLastName" Title="Last Name" />
+                <PropertyColumn Property="x => x.StudentContactDetails" Title="Contact Details" />
+                <TemplateColumn CellClass="d-flex justify-end">
+                    <CellTemplate>
+                        <MudStack Row>
+                            @if (_currentlyServing is not null && _currentlyServing.QueueId == context.Item.QueueId)
+                            {
+                                <MudButton OnClick="@(async () => await FinishAsync(context.Item))" Size="@Size.Medium" Variant="@Variant.Filled" Color="@Color.Info">Finish</MudButton>
+                            }
+                            else
+                            {
+                                <MudButton OnClick="@(async () => await ServeAsync(context.Item))" Size="@Size.Medium" Variant="@Variant.Filled" Color="@Color.Primary">Serve</MudButton>
+                            }
+                            <MudButton OnClick="@(async () => await DeleteAsync(context.Item))" Size="@Size.Medium" Variant="@Variant.Filled" Color="@Color.Error">Delete</MudButton>
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+        </MudDataGrid>
+    </MudItem>
 </MudGrid>
+}

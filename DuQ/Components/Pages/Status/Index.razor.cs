@@ -8,15 +8,15 @@ namespace DuQ.Components.Pages.Status;
 
 public partial class Index : IDisposable
 {
-    [Inject] private Status.Domain Domain { get; set; } = null!;
-    [Inject] private DbSaveNotifier DbSaveNotifier { get; set; } = new();
+    [Inject] private Domain? Domain { get; set; }
+    [Inject] private DbSaveNotifier? DbSaveNotifier { get; set; }
 
     private List<QueueStatusDto> _statusItems = [];
-    private bool IsLoading { get; set; }
+    private bool _isLoading;
 
     protected override async Task OnInitializedAsync()
     {
-        DbSaveNotifier.OnDbSave += ReloadStatusItemsHandler;
+        DbSaveNotifier!.OnDbSave += ReloadStatusItemsHandler;
 
         await LoadStatusItemsAsync();
     }
@@ -28,12 +28,12 @@ public partial class Index : IDisposable
 
     private async Task LoadStatusItemsAsync()
     {
-        IsLoading = true;
+        _isLoading = true;
         await this.InvokeAsync(StateHasChanged);
 
         //_statusItems = await Domain.GetQueueItemsAsync();
 
-        IsLoading = false;
+        _isLoading = false;
         await this.InvokeAsync(StateHasChanged);
     }
 
