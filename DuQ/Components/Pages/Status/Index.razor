@@ -19,12 +19,10 @@ else
         </MudItem>
 
         <MudItem xs="12">
-            <MudDataGrid Items="_queueItems">
+            <MudDataGrid Items="_statusItems">
                 <Columns>
-                    <PropertyColumn Property="x => x.StudentNo" Title="Student ID"/>
-                    <PropertyColumn Property="x => x.StudentFirstName" Title="First Name"/>
-                    <PropertyColumn Property="x => x.QueueType" Title="Service"/>
-                    <PropertyColumn Property="x => TimeOnly.FromDateTime(x.CheckinTime)" Title="Check In Time"/>
+                    <PropertyColumn Property="x => x.QueueLocation" Title="Location"/>
+                    <PropertyColumn Property="x => x.QueueWaitTime" Title="Estimated Wait Time"/>
                 </Columns>
             </MudDataGrid>
         </MudItem>

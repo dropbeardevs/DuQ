@@ -12,38 +12,51 @@
         <MudItem xs="12">
             <EditForm Model="@Model" OnValidSubmit="@SubmitAsync" FormName="StudentCheckin" novalidate>
                 <MudItem xs="12">
-                    <MudTextField @bind-Value="Model!.StudentId"
-                                  Label="Student ID"
+                    <MudTextField @bind-Value="Model!.FirstName"
+                                  Label="First Name"
                                   Variant="Variant.Outlined"
                                   AutoFocus="true"
                                   Clearable="true"
                                   Counter="20"
                                   Class="px-4">
-                        Student ID
+                        First Name
                     </MudTextField>
                 </MudItem>
                 <MudItem xs="12">
-                    <MudTextField @bind-Value="Model!.FirstName"
-                                  Label="First Name"
+                    <MudTextField @bind-Value="Model!.LastName"
+                                  Label="Last Name"
                                   Variant="Variant.Outlined"
                                   Clearable="true"
                                   Counter="50"
                                   Class="px-4">
-                        First Name
+                        Last Name
                     </MudTextField>
                 </MudItem>
-
                 <MudItem xs="12">
-                    <MudSelect @bind-Value="Model!.QueueType"
+                    <MudTextField @bind-Value="Model!.ContactDetails"
+                                  Label="Contact Details"
+                                  Variant="Variant.Outlined"
+                                  Clearable="true"
+                                  Counter="50"
+                                  Class="px-4">
+                        Contact Details
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12">
+                    <MudSelect @bind-Value="Model!.Location"
                                T="string"
-                               Label="Service"
+                               Label="Location"
                                Variant="Variant.Outlined"
                                Placeholder="Please Select"
                                AnchorOrigin="Origin.BottomCenter"
                                Class="px-4">
-                        @foreach (string queueType in _queueTypes)
+
+                        @if (_queueLocations is not null)
                         {
-                            <MudSelectItem Value="@queueType">@queueType</MudSelectItem>
+                            foreach (string queueLocation in _queueLocations)
+                            {
+                                <MudSelectItem Value="@queueLocation">@queueLocation</MudSelectItem>
+                            }
                         }
                     </MudSelect>
                 </MudItem>

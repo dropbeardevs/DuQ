@@ -1,5 +1,6 @@
+using DuQ.Contexts;
 using DuQ.Core;
-using DuQ.Data;
+using DuQ.Models.Core;
 using Microsoft.EntityFrameworkCore;
 
 namespace DuQ.Components.Pages.Admin;
@@ -15,59 +16,28 @@ public class Domain
         _dbSaveNotifier = dbSaveNotifier;
     }
 
-
-    // public async Task<AdminDto>? GetQueueItemAsync(Guid queueTypeId, Guid queueItemId)
-    // {
-    //     await using DuqContext context = await _contextFactory.CreateDbContextAsync();
-    //
-    //     context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
-    //
-    //     AdminDto? adminQueueItem = await context.DuQueues
-    //                                            .Where(x => x.QueueType.Id == queueTypeId)
-    //                                            .Where(x => x.Id == queueItemId)
-    //                                            .Select(x => new AdminDto()
-    //                                                         {
-    //                                                             StudentNo = x.Student.StudentNo,
-    //                                                             StudentFirstName = x.Student.FirstName,
-    //                                                         })
-    //                                            .FirstOrDefaultAsync();
-    //
-    //     return adminQueueItem!;
-    // }
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="queueItemId">Current ID of queue item</param>
-    /// <returns>Guid of previous item</returns>
-    // public async Task<Guid> GetNextQueueGuid(Guid queueItemId)
-    // {
-    //
-    // }
-
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="queueItemId">ID of previous queue item</param>
-    // public async Task GetPreviousQueueItem(Guid queueItemId)
-    // {
-    //
-    // }
-
-    public async Task<List<AdminDto>> GetAdminItemsAsync()
+    public async Task<List<AdminDto>> GetQueueItemsAsync()
     {
-        //await RefreshAdminItemsAsync();
-
         await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
-        List<AdminDto>? adminItems = await context.DuQueuePositions.Select(x => new AdminDto
-                                                                           {
-                                                                               StudentNo = x.Current.Student.StudentNo,
-                                                                               StudentFirstName = x.Current.Student.FirstName,
-                                                                               QueueName = x.Current.QueueType.Name
-                                                                      }).ToListAsync();
+        var items = await context.DuQueues
+                                 .Include(q => q.Student)
+                                 .Include(q => q.QueueLocation)
+                                 .Include(q => q.QueueStatus)
+                                 .Select(item => new AdminDto()
+                                                 {
+                                                     QueueId = item.Id,
+                                                     QueueLocationId = item.QueueLocation.Id,
+                                                     StudentFirstName = item.Student.FirstName,
+                                                     StudentLastName = item.Student.LastName,
+                                                     StudentContactDetails = item.Student.ContactDetails,
+                                                     QueueStatus = item.QueueStatus.Status,
+                                                     CheckinTime = item.CheckinTime,
+                                                     CheckoutTime = item.CheckoutTime,
+                                                     Modified = item.ModifiedUtc
+                                                 }).ToListAsync();
 
-        return adminItems;
+        return items;
     }
 
     public async Task RefreshAdminItemsAsync()
@@ -75,42 +45,6 @@ public class Domain
         await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
         context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
-
-        // List<DuQueue> currentQueueItems = await context.DuQueues
-        //                                                .Where(x => x.QueueStatus.Status == "In Queue")
-        //                                                .Select(x => x)
-        //                                                .ToListAsync();
-
-
-        DuQueuePosition campusIdCardCurrent = await context.DuQueuePositions
-                                                           .Where(x => x.QueueType.Name == "Campus ID Card")
-                                                           .Select(x => x)
-                                                           .FirstAsync();
-
-        Guid campusIdCardCurrentId = await context.DuQueues
-                                        .Where(x => x.QueueType.Name == "Campus ID Card")
-                                        .Where(x => x.QueueStatus.Status == "Serving")
-                                        .Select(x => x.Id)
-                                        .FirstAsync();
-
-        campusIdCardCurrent.Current.Id = campusIdCardCurrentId;
-
-        Guid capAndGownCurrentId = await context.DuQueues
-                                                .Where(x => x.QueueType.Name == "Cap and Gown")
-                                                .Where(x => x.QueueStatus.Status == "Serving")
-                                                .Select(x => x.Id)
-                                                .FirstAsync();
-
-        Guid otherCurrentId = await context.DuQueues
-                                           .Where(x => x.QueueType.Name == "Other")
-                                           .Where(x => x.QueueStatus.Status == "Serving")
-                                           .Select(x => x.Id)
-                                           .FirstAsync();
-
-
-        List<DuQueuePosition> queuePositions = await context.DuQueuePositions.Select(x => x).ToListAsync();
-
-
 
     }
 }

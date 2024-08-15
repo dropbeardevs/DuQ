@@ -1,8 +1,11 @@
+using DuQ.Contexts;
 using DuQ.Core;
-using DuQ.Data;
+using DuQ.Models.Core;
+using DuQ.Models.DuQueue;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Serilog;
 
 namespace DuQ.Components.Pages.Checkin;
 
@@ -17,8 +20,7 @@ public class Domain
         _dbSaveNotifier = dbSaveNotifier;
     }
 
-
-    public async Task<bool> SaveStudent(CheckinModel? model)
+    public async Task<bool> SaveStudentAsync(CheckinModel? model)
     {
         if (model is null)
             return false;
@@ -30,25 +32,24 @@ public class Domain
             context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
 
             // Add logic to prevent students from adding themselves multiple times
-
             Student? student = await context.Students
-                .FirstOrDefaultAsync(x => x.StudentNo == model.StudentId);
+                .FirstOrDefaultAsync(x => x.FirstName == model.FirstName && x.LastName == model.LastName);
 
             if (student is not null)
             {
                 // Check if they've checked in within the last hour
                 // If so, then update existing record
                 DuQueue? queueItem = await context.DuQueues
-                    .Where(x => x.Student.StudentNo == model.StudentId)
-                    .Where(x => x.CheckinTime > DateTime.Now.AddHours(-1))
+                    .Where(x => x.Student.FirstName == model.FirstName && x.Student.LastName == model.LastName)
+                    .Where(x => x.CheckinTime > DateTime.UtcNow.AddHours(-1))
                     .FirstOrDefaultAsync();
 
                 if (queueItem is not null)
                 {
-                    queueItem.CheckinTime = DateTime.Now;
-                    queueItem.LastUpdated = DateTime.Now;
-                    queueItem.QueueType = await context.DuQueueTypes
-                        .Where(x => x.Name == model.QueueType)
+                    queueItem.CheckinTime = DateTime.UtcNow;
+                    queueItem.ModifiedUtc = DateTime.UtcNow;
+                    queueItem.QueueLocation = await context.DuQueueLocations
+                        .Where(x => x.Location == model.Location)
                         .FirstAsync();
 
                     await context.SaveChangesAsync();
@@ -59,12 +60,13 @@ public class Domain
 
             student ??= new Student()
             {
-                StudentNo = model.StudentId!,
                 FirstName = model.FirstName!,
+                LastName = model.LastName!,
+                ContactDetails = model.ContactDetails!,
             };
 
-            DuQueueType queueType = await context.DuQueueTypes
-                .Where(x => x.Name == model.QueueType)
+            DuQueueLocation queueLocation = await context.DuQueueLocations
+                .Where(x => x.Location == model.Location)
                 .FirstAsync();
 
             DuQueueStatus queueStatus = await context.DuQueueStatuses
@@ -74,10 +76,10 @@ public class Domain
             DuQueue newQueueItem = new()
             {
                 Student = student,
-                QueueType = queueType,
+                QueueLocation = queueLocation,
                 QueueStatus = queueStatus,
-                CheckinTime = DateTime.Now,
-                LastUpdated = DateTime.Now
+                CheckinTime = DateTime.UtcNow,
+                ModifiedUtc = DateTime.UtcNow
             };
 
             context.DuQueues.Add(newQueueItem);
@@ -88,26 +90,25 @@ public class Domain
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            Log.Error(ex, "Error saving student");
             throw;
         }
     }
 
-    public async Task<List<string>> GetQueueTypesAsync()
+    public async Task<List<string>> GetLocationsAsync()
     {
         try
         {
             await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
-            List<string>? queueTypes = await context.DuQueueTypes.Select(x => x.Name).ToListAsync();
+            List<string>? queueLocations = await context.DuQueueLocations.Select(x => x.Location).ToListAsync();
 
-            return queueTypes;
+            return queueLocations;
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex);
+            Log.Error(ex, "Error getting locations");
             throw;
         }
-
     }
 }

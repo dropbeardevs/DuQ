@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 using DuQ.Core;
-using DuQ.Data;
+using DuQ.Models.Core;
 using Microsoft.AspNetCore.Components;
 
 
@@ -11,7 +11,7 @@ public partial class Index : IDisposable
     [Inject] private Status.Domain Domain { get; set; } = null!;
     [Inject] private DbSaveNotifier DbSaveNotifier { get; set; } = new();
 
-    private List<DuQueueDto> _queueItems = [];
+    private List<QueueStatusDto> _statusItems = [];
     private bool IsLoading { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -31,7 +31,7 @@ public partial class Index : IDisposable
         IsLoading = true;
         await this.InvokeAsync(StateHasChanged);
 
-        _queueItems = await Domain.GetQueueItemsAsync();
+        //_statusItems = await Domain.GetQueueItemsAsync();
 
         IsLoading = false;
         await this.InvokeAsync(StateHasChanged);
@@ -39,7 +39,7 @@ public partial class Index : IDisposable
 
     private async Task ReloadStatusItemsHandler()
     {
-        _queueItems = await Domain.GetQueueItemsAsync();
+        //_statusItems = await Domain.GetQueueItemsAsync();
 
         await this.InvokeAsync(StateHasChanged);
 

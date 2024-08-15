@@ -1,0 +1,35 @@
+
+    migrationBuilder.InsertData(
+    table: "du_queue_types",
+    columns: new[] { "id", "name", "last_updated" },
+    values: new object[]
+    { Guid.NewGuid(), "Cap and Gown", DateTime.UtcNow }
+    );
+
+    migrationBuilder.InsertData(
+    table: "du_queue_types",
+    columns: new[] { "id", "name", "last_updated" },
+    values: new object[]
+    { Guid.NewGuid(), "Other", DateTime.UtcNow }
+    );
+
+    migrationBuilder.InsertData(
+    table: "du_queue_statuses",
+    columns: new[] { "id", "status", "last_updated" },
+    values: new object[]
+    { Guid.NewGuid(), "In Queue", DateTime.UtcNow }
+    );
+
+    migrationBuilder.InsertData(
+    table: "du_queue_statuses",
+    columns: new[] { "id", "status", "last_updated" },
+    values: new object[]
+    { Guid.NewGuid(), "Serving", DateTime.UtcNow }
+    );
+
+    migrationBuilder.InsertData(
+    table: "du_queue_statuses",
+    columns: new[] { "id", "status", "last_updated" },
+    values: new object[]
+    { Guid.NewGuid(), "Finished", DateTime.UtcNow }
+    );

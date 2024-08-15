@@ -9,7 +9,7 @@ public partial class MainLayout
 
     public readonly MudTheme FullertonCollegeTheme = new MudTheme()
     {
-        Palette = new PaletteLight()
+        PaletteLight = new PaletteLight()
         {
             Primary = FullertonCollegeColor,
             AppbarBackground = FullertonCollegeColor,

@@ -1,4 +1,4 @@
-using DuQ.Data;
+using DuQ.Models.Core;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
@@ -12,10 +12,8 @@ public partial class Index
     [SupplyParameterFromForm]
     private CheckinModel? Model { get; set; }
 
-    private List<string> _queueTypes = default!;
+    private List<string> _queueLocations = [];
     private bool _isCheckedIn;
-
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -25,12 +23,12 @@ public partial class Index
     protected override async Task OnParametersSetAsync()
     {
         Model ??= new CheckinModel();
-        _queueTypes = await Domain.GetQueueTypesAsync();
+        _queueLocations = await Domain.GetLocationsAsync();
     }
 
     private async Task SubmitAsync()
     {
-        bool success = await Domain!.SaveStudent(Model!);
+        bool success = await Domain.SaveStudentAsync(Model!);
 
         _isCheckedIn = true;
     }
