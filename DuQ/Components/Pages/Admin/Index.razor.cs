@@ -13,6 +13,9 @@ public partial class Index
 
     [SupplyParameterFromForm] private AdminModel? Model { get; set; }
 
+    [SupplyParameterFromQuery(Name = "loc")]
+    public string? _location { get; set; }
+
     private List<string> _queueLocations = [];
 
     private List<AdminDto> _queueItems = null!;
@@ -38,7 +41,18 @@ public partial class Index
         // Add All
         _queueLocations.Insert(0, "All");
 
-        Model.Location = "All";
+        switch (_location)
+        {
+            case "AR":
+                Model.Location = "A&R";
+                break;
+            case "HRC":
+                Model.Location = "HRC";
+                break;
+            default:
+                Model.Location = "All";
+                break;
+        }
     }
 
     private async Task LoadStatusItems()
