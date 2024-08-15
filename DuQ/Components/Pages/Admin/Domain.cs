@@ -27,6 +27,7 @@ public class Domain
                                  .Include(q => q.QueueStatus)
                                  .Where (q => q.QueueStatus.Status != "Finished")
                                  .Where (q => q.QueueStatus.Status != "Deleted")
+                                 .OrderBy(x => x.CheckinTime)
                                  .Select(item => new AdminDto()
                                                  {
                                                      QueueId = item.Id,
@@ -38,7 +39,8 @@ public class Domain
                                                      CheckinTime = item.CheckinTime,
                                                      CheckoutTime = item.CheckoutTime,
                                                      Modified = item.ModifiedUtc
-                                                 }).ToListAsync();
+                                                 })
+                                 .ToListAsync();
 
         return items;
     }

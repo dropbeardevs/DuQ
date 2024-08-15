@@ -1,6 +1,7 @@
 using DuQ.Core;
 using DuQ.Models.Core;
 using Microsoft.AspNetCore.Components;
+using NodaTime;
 
 namespace DuQ.Components.Pages.Admin;
 
@@ -90,6 +91,8 @@ public partial class Index
     private async Task DeleteAsync(AdminDto item)
     {
         await Domain.SetStatusToDeleted(item.QueueId);
+
+        await LoadStatusItems();
     }
 
     void ClearData()
@@ -112,4 +115,15 @@ public partial class Index
 
         return false;
     };
+
+    private string GetLocalTime(DateTime utcTime)
+    {
+        var timeZone = DateTimeZoneProviders.Tzdb["America/Los_Angeles"];
+
+        var instant = Instant.FromDateTimeUtc(DateTime.SpecifyKind(utcTime, DateTimeKind.Utc));
+
+        string result = instant.InZone(timeZone).ToDateTimeUnspecified().ToString("h:mm tt");
+
+        return result;
+    }
 }
