@@ -24,6 +24,7 @@ public class Domain
 
         var items = await context.DuQueues
                                  .Include(q => q.Student)
+                                 .Include(q => q.QueueType)
                                  .Include(q => q.QueueLocation)
                                  .Include(q => q.QueueStatus)
                                  .Where(q => q.QueueStatus.Status != "Finished")
@@ -33,6 +34,7 @@ public class Domain
                                                  {
                                                      QueueId = item.Id,
                                                      QueueLocation = item.QueueLocation.Location,
+                                                     QueueType = item.QueueType.Type,
                                                      StudentFirstName = item.Student.FirstName,
                                                      StudentLastName = item.Student.LastName,
                                                      StudentContactDetails = item.Student.ContactDetails,

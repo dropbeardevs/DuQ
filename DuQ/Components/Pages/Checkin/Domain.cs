@@ -76,9 +76,14 @@ public class Domain
                 .Where(x => x.Status == "In Queue")
                 .FirstAsync();
 
+            DuQueueType queueType = await context.DuQueueTypes
+                                          .Where(x => x.Type == "Campus ID Card")
+                                          .FirstAsync();
+
             DuQueue newQueueItem = new()
             {
                 Student = student,
+                QueueType = queueType,
                 QueueLocation = queueLocation,
                 QueueStatus = queueStatus,
                 CheckinTime = DateTime.UtcNow,
