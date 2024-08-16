@@ -115,6 +115,36 @@ namespace DuQ.Migrations
                     b.ToTable("du_queue_statuses", "duqueue");
                 });
 
+            modelBuilder.Entity("DuQ.Models.DuQueue.DuQueueWaitTime", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("location");
+
+                    b.Property<DateTime>("ModifiedUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("modified_utc");
+
+                    b.Property<int>("QueueNoStudents")
+                        .HasColumnType("integer")
+                        .HasColumnName("queue_no_students");
+
+                    b.Property<int>("WaitTime")
+                        .HasColumnType("integer")
+                        .HasColumnName("wait_time");
+
+                    b.HasKey("Id")
+                        .HasName("pk_du_queue_wait_times");
+
+                    b.ToTable("du_queue_wait_times", "duqueue");
+                });
+
             modelBuilder.Entity("DuQ.Models.DuQueue.Student", b =>
                 {
                     b.Property<Guid>("Id")

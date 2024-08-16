@@ -9,6 +9,7 @@ public class DuqContext : DbContext
     public DbSet<DuQueueStatus> DuQueueStatuses { get; set; }
     public DbSet<DuQueueLocation> DuQueueLocations { get; set; }
     public DbSet<DuQueue> DuQueues { get; set; }
+    public DbSet<DuQueueWaitTime> DuQueueWaitTimes { get; set; }
 
 
     //public DbSet<DuQueuePosition> DuQueuePositions { get; set; }
@@ -92,6 +93,26 @@ public class DuqContext : DbContext
 
         modelBuilder.Entity<DuQueue>()
                     .Property(q => q.ModifiedUtc)
+                    .IsRequired();
+
+        // DuQueueWaitTime
+        modelBuilder.Entity<DuQueueWaitTime>()
+                    .HasKey(qw => qw.Id);
+
+        modelBuilder.Entity<DuQueueWaitTime>()
+                    .Property(qw => qw.Id)
+                    .IsRequired();
+
+        modelBuilder.Entity<DuQueueWaitTime>()
+                    .Property(qw => qw.WaitTime)
+                    .IsRequired();
+
+        modelBuilder.Entity<DuQueueWaitTime>()
+                    .Property(qw => qw.QueueNoStudents)
+                    .IsRequired();
+
+        modelBuilder.Entity<DuQueueWaitTime>()
+                    .Property(qw => qw.ModifiedUtc)
                     .IsRequired();
     }
 }

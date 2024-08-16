@@ -1,6 +1,7 @@
 using DuQ.Contexts;
 using DuQ.Core;
 using DuQ.Models.Core;
+using DuQ.Models.DuQueue;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -25,8 +26,8 @@ public class Domain
                                  .Include(q => q.Student)
                                  .Include(q => q.QueueLocation)
                                  .Include(q => q.QueueStatus)
-                                 .Where (q => q.QueueStatus.Status != "Finished")
-                                 .Where (q => q.QueueStatus.Status != "Deleted")
+                                 .Where(q => q.QueueStatus.Status != "Finished")
+                                 .Where(q => q.QueueStatus.Status != "Deleted")
                                  .OrderBy(x => x.CheckinTime)
                                  .Select(item => new AdminDto()
                                                  {
@@ -50,7 +51,6 @@ public class Domain
         await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
         context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
-
     }
 
     public async Task SetStatusToInQueue(Guid id)
@@ -139,8 +139,8 @@ public class Domain
                                     .SingleAsync(q => q.Id == id);
 
             item.QueueStatus = await context.DuQueueStatuses
-                                                .Where(x => x.Status == "Deleted")
-                                                .FirstAsync();
+                                            .Where(x => x.Status == "Deleted")
+                                            .FirstAsync();
 
             context.DuQueues.Update(item);
 
@@ -162,6 +162,42 @@ public class Domain
             List<string>? queueLocations = await context.DuQueueLocations.Select(x => x.Location).ToListAsync();
 
             return queueLocations;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error getting locations");
+            throw;
+        }
+    }
+
+    public async Task<List<DuQueueWaitTime>> GetWaitTimesAsync()
+    {
+        try
+        {
+            await using DuqContext context = await _contextFactory.CreateDbContextAsync();
+
+            var waitTimes = await context.DuQueueWaitTimes.ToListAsync();
+
+            return waitTimes;
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, "Error getting locations");
+            throw;
+        }
+    }
+
+    public async Task UpdateWaitTimesAsync(List<DuQueueWaitTime> waitTimes)
+    {
+        try
+        {
+            await using DuqContext context = await _contextFactory.CreateDbContextAsync();
+
+            context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
+
+            context.UpdateRange(waitTimes);
+
+            await context.SaveChangesAsync();
         }
         catch (Exception ex)
         {

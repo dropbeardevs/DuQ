@@ -2,75 +2,58 @@
 
 <AntiforgeryToken/>
 
-@if (_isLoading)
-
-{
-<MudGrid Justify="Justify.Center" Style="height: 80vh; align-items: center;">
-    <MudItem>
-        <MudProgressCircular Color="Color.Default" Size="Size.Large" Indeterminate="true"/>
-    </MudItem>
-</MudGrid>
-}
-else
-{
 <MudGrid Class="justify-center">
     <MudItem xs="12" Class="my-4">
         <MudText Typo="Typo.h6" Align="Align.Center">Student Services Queue Admin</MudText>
     </MudItem>
 
-    @if (_currentlyServing is not null)
-    {
-        <MudItem xs="12">
-            <MudText Typo="Typo.h4"
-                     Align="Align.Center">
-                <b>Currently Serving: @_currentlyServing.StudentFirstName @_currentlyServing.StudentLastName</b>
-            </MudText>
-        </MudItem>
-    }
+    <MudItem xs="2">
+        <EditForm Model="@Model" OnValidSubmit="@SubmitAsync" FormName="AdminUpdate" novalidate>
+            <MudItem xs="12">
+                <MudNumericField @bind-Value="Model!.HrcNoStudents"
+                              Label="HRC Number of Students"
+                              Variant="Variant.Outlined"
+                              AutoFocus="true"
 
-    <MudItem xs="4">
-        <MudSelect @bind-Value="Model!.Location"
-                   T="string"
-                   Label="Location"
-                   Variant="Variant.Outlined"
-                   Placeholder="Please Select"
-                   AnchorOrigin="Origin.BottomCenter"
-                   Class="px-4">
-            @if (_queueLocations.Count > 0)
-            {
-                foreach (string queueLocation in _queueLocations)
-                {
-                    <MudSelectItem Value="@queueLocation">@queueLocation</MudSelectItem>
-                }
-            }
-        </MudSelect>
-    </MudItem>
-
-    <MudItem xs="12">
-        <MudDataGrid Items="@_queueItems" Filterable="true" SortMode="SortMode.Single" QuickFilter="@QuickFilter">
-            <Columns>
-                <PropertyColumn Property="x => x.QueueLocation" Title="Queue Location"/>
-                <PropertyColumn Property="x => GetLocalTime(x.CheckinTime)" Title="Check In Time" />
-                <PropertyColumn Property="x => x.StudentFirstName" Title="First Name" />
-                <PropertyColumn Property="x => x.StudentLastName" Title="Last Name" />
-                <PropertyColumn Property="x => x.StudentContactDetails" Title="Contact Details" />
-                <TemplateColumn CellClass="d-flex justify-end">
-                    <CellTemplate>
-                        <MudStack Row>
-                            @if (_currentlyServing is not null && _currentlyServing.QueueId == context.Item.QueueId)
-                            {
-                                <MudButton OnClick="@(async () => await FinishAsync(context.Item))" Size="@Size.Medium" Variant="@Variant.Filled" Color="@Color.Info">Finish Serving</MudButton>
-                            }
-                            else
-                            {
-                                <MudButton OnClick="@(async () => await ServeAsync(context.Item))" Size="@Size.Medium" Variant="@Variant.Filled" Color="@Color.Primary">Serve</MudButton>
-                            }
-                            <MudButton OnClick="@(async () => await DeleteAsync(context.Item))" Size="@Size.Medium" Variant="@Variant.Filled" Color="@Color.Error">Delete</MudButton>
-                        </MudStack>
-                    </CellTemplate>
-                </TemplateColumn>
-            </Columns>
-        </MudDataGrid>
+                              Class="py-4">
+                    HRC Number of Students
+                </MudNumericField>
+            </MudItem>
+            <MudItem xs="12">
+                <MudNumericField @bind-Value="Model!.HrcWaitTime"
+                              Label="HRC Wait Time (minutes)"
+                              Variant="Variant.Outlined"
+                              Class="py-4">
+                    HRC Wait Time
+                </MudNumericField>
+            </MudItem>
+            <MudItem xs="12">
+                <MudNumericField @bind-Value="Model!.ArNoStudents"
+                              Label="A&amp;R Number of Students"
+                              Variant="Variant.Outlined"
+                              Class="py-4">
+                    A&amp;R Number of Students
+                </MudNumericField>
+            </MudItem>
+            <MudItem xs="12">
+                <MudNumericField @bind-Value="Model!.ArWaitTime"
+                              Label="A&amp;R Wait Time (minutes)"
+                              Variant="Variant.Outlined"
+                              Class="py-4">
+                    A&amp;R Wait Time
+                </MudNumericField>
+            </MudItem>
+            <MudItem xs="12" Class="my-16">
+                <div style="text-align:center;">
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               FullWidth="true"
+                               ButtonType="ButtonType.Submit"
+                               Style="width: 50%">
+                        Update
+                    </MudButton>
+                </div>
+            </MudItem>
+        </EditForm>
     </MudItem>
 </MudGrid>
-}

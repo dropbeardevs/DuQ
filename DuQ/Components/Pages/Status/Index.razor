@@ -18,11 +18,11 @@ else
             <MudText Typo="Typo.h6" Align="Align.Center">Student Services Queue Status</MudText>
         </MudItem>
 
-        <MudItem xs="12">
+        <MudItem xs="4">
             <MudDataGrid Items="_statusItems">
                 <Columns>
-                    <PropertyColumn Property="x => x.QueueLocation" Title="Location"/>
-                    <PropertyColumn Property="x => x.QueueWaitTime" Title="Estimated Wait Time"/>
+                    <PropertyColumn Property="x => x.QueueLocation" Title="Location" />
+                    <PropertyColumn Property="x => MinutesText(x.TotalWaitTime)" Title="Estimated Wait Time" />
                 </Columns>
             </MudDataGrid>
         </MudItem>

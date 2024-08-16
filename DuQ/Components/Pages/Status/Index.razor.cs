@@ -31,7 +31,7 @@ public partial class Index : IDisposable
         _isLoading = true;
         await this.InvokeAsync(StateHasChanged);
 
-        //_statusItems = await Domain.GetQueueItemsAsync();
+        _statusItems = await Domain.GetStatusItemsAsync();
 
         _isLoading = false;
         await this.InvokeAsync(StateHasChanged);
@@ -39,10 +39,13 @@ public partial class Index : IDisposable
 
     private async Task ReloadStatusItemsHandler()
     {
-        //_statusItems = await Domain.GetQueueItemsAsync();
+        _statusItems = await Domain.GetStatusItemsAsync();
 
         await this.InvokeAsync(StateHasChanged);
-
     }
 
+    private string MinutesText(int minutes)
+    {
+        return minutes.ToString() + " minutes";
+    }
 }

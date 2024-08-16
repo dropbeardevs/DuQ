@@ -4,4 +4,6 @@ public class QueueStatusDto
 {
     public string QueueLocation { get; set; }
     public int QueueWaitTime { get; set; }
+    public int QueueNoStudents { get; set;  }
+    public int TotalWaitTime { get; set; }
 }

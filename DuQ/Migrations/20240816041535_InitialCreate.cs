@@ -43,6 +43,22 @@ namespace DuQ.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "du_queue_wait_times",
+                schema: "duqueue",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    location = table.Column<string>(type: "text", nullable: false),
+                    wait_time = table.Column<int>(type: "integer", nullable: false),
+                    queue_no_students = table.Column<int>(type: "integer", nullable: false),
+                    modified_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_du_queue_wait_times", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "students",
                 schema: "duqueue",
                 columns: table => new
@@ -166,6 +182,10 @@ namespace DuQ.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "du_queue_wait_times",
+                schema: "duqueue");
+
             migrationBuilder.DropTable(
                 name: "du_queues",
                 schema: "duqueue");

@@ -1,0 +1,76 @@
+@page "/admin-new"
+
+<AntiforgeryToken/>
+
+@if (_isLoading)
+
+{
+<MudGrid Justify="Justify.Center" Style="height: 80vh; align-items: center;">
+    <MudItem>
+        <MudProgressCircular Color="Color.Default" Size="Size.Large" Indeterminate="true"/>
+    </MudItem>
+</MudGrid>
+}
+else
+{
+<MudGrid Class="justify-center">
+    <MudItem xs="12" Class="my-4">
+        <MudText Typo="Typo.h6" Align="Align.Center">Student Services Queue Admin</MudText>
+    </MudItem>
+
+    @if (_currentlyServing is not null)
+    {
+        <MudItem xs="12">
+            <MudText Typo="Typo.h4"
+                     Align="Align.Center">
+                <b>Currently Serving: @_currentlyServing.StudentFirstName @_currentlyServing.StudentLastName</b>
+            </MudText>
+        </MudItem>
+    }
+
+    <MudItem xs="4">
+        <MudSelect @bind-Value="Model!.Location"
+                   T="string"
+                   Label="Location"
+                   Variant="Variant.Outlined"
+                   Placeholder="Please Select"
+                   AnchorOrigin="Origin.BottomCenter"
+                   Class="px-4">
+            @if (_queueLocations.Count > 0)
+            {
+                foreach (string queueLocation in _queueLocations)
+                {
+                    <MudSelectItem Value="@queueLocation">@queueLocation</MudSelectItem>
+                }
+            }
+        </MudSelect>
+    </MudItem>
+
+    <MudItem xs="12">
+        <MudDataGrid Items="@_queueItems" Filterable="true" SortMode="SortMode.Single" QuickFilter="@QuickFilter">
+            <Columns>
+                <PropertyColumn Property="x => x.QueueLocation" Title="Queue Location"/>
+                <PropertyColumn Property="x => GetLocalTime(x.CheckinTime)" Title="Check In Time" />
+                <PropertyColumn Property="x => x.StudentFirstName" Title="First Name" />
+                <PropertyColumn Property="x => x.StudentLastName" Title="Last Name" />
+                <PropertyColumn Property="x => x.StudentContactDetails" Title="Contact Details" />
+                <TemplateColumn CellClass="d-flex justify-end">
+                    <CellTemplate>
+                        <MudStack Row>
+                            @if (_currentlyServing is not null && _currentlyServing.QueueId == context.Item.QueueId)
+                            {
+                                <MudButton OnClick="@(async () => await FinishAsync(context.Item))" Size="@Size.Medium" Variant="@Variant.Filled" Color="@Color.Info">Finish Serving</MudButton>
+                            }
+                            else
+                            {
+                                <MudButton OnClick="@(async () => await ServeAsync(context.Item))" Size="@Size.Medium" Variant="@Variant.Filled" Color="@Color.Primary">Serve</MudButton>
+                            }
+                            <MudButton OnClick="@(async () => await DeleteAsync(context.Item))" Size="@Size.Medium" Variant="@Variant.Filled" Color="@Color.Error">Delete</MudButton>
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+        </MudDataGrid>
+    </MudItem>
+</MudGrid>
+}
