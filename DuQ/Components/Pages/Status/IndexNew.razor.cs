@@ -1,12 +1,10 @@
-using System.Collections.ObjectModel;
 using DuQ.Core;
 using DuQ.Models.Core;
 using Microsoft.AspNetCore.Components;
 
-
 namespace DuQ.Components.Pages.Status;
 
-public partial class Index : IDisposable
+public partial class IndexNew
 {
     [Inject] private Domain? Domain { get; set; }
     [Inject] private DbSaveNotifier? DbSaveNotifier { get; set; }
