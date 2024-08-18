@@ -6,14 +6,27 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
-
     <ItemGroup>
       <PackageReference Include="EFCore.NamingConventions" Version="8.0.3" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
-        <PrivateAssets>all</PrivateAssets>
+      <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.8" />
+      <PackageReference Include="Microsoft.AspNetCore.Components" Version="8.0.8" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.Analyzers" Version="8.0.8" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.Forms" Version="8.0.8" />
+      <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.8" />
+      <PackageReference Include="Microsoft.AspNetCore.Metadata" Version="8.0.8" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.8" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="8.0.8" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.8">
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
       </PackageReference>
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.2" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.8">
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        <PrivateAssets>all</PrivateAssets>
+      </PackageReference>
+      <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
       <PackageReference Include="MudBlazor" Version="7.6.0" />
       <PackageReference Include="NodaTime" Version="3.1.11" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
