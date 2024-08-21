@@ -18,7 +18,7 @@ namespace DuQ.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasDefaultSchema("duqueue")
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -50,6 +50,10 @@ namespace DuQ.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("queue_status_id");
 
+                    b.Property<Guid>("QueueTypeId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("queue_type_id");
+
                     b.Property<Guid>("StudentId")
                         .HasColumnType("uuid")
                         .HasColumnName("student_id");
@@ -62,6 +66,9 @@ namespace DuQ.Migrations
 
                     b.HasIndex("QueueStatusId")
                         .HasDatabaseName("ix_du_queues_queue_status_id");
+
+                    b.HasIndex("QueueTypeId")
+                        .HasDatabaseName("ix_du_queues_queue_type_id");
 
                     b.HasIndex("StudentId")
                         .HasDatabaseName("ix_du_queues_student_id");
@@ -113,6 +120,29 @@ namespace DuQ.Migrations
                         .HasName("pk_du_queue_statuses");
 
                     b.ToTable("du_queue_statuses", "duqueue");
+                });
+
+            modelBuilder.Entity("DuQ.Models.DuQueue.DuQueueType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("ModifiedUtc")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("modified_utc");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("type");
+
+                    b.HasKey("Id")
+                        .HasName("pk_du_queue_types");
+
+                    b.ToTable("du_queue_types", "duqueue");
                 });
 
             modelBuilder.Entity("DuQ.Models.DuQueue.DuQueueWaitTime", b =>
@@ -199,6 +229,13 @@ namespace DuQ.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_du_queues_du_queue_statuses_queue_status_id");
 
+                    b.HasOne("DuQ.Models.DuQueue.DuQueueType", "QueueType")
+                        .WithMany("DuQueues")
+                        .HasForeignKey("QueueTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_du_queues_du_queue_types_queue_type_id");
+
                     b.HasOne("DuQ.Models.DuQueue.Student", "Student")
                         .WithMany("DuQueues")
                         .HasForeignKey("StudentId")
@@ -210,6 +247,8 @@ namespace DuQ.Migrations
 
                     b.Navigation("QueueStatus");
 
+                    b.Navigation("QueueType");
+
                     b.Navigation("Student");
                 });
 
@@ -219,6 +258,11 @@ namespace DuQ.Migrations
                 });
 
             modelBuilder.Entity("DuQ.Models.DuQueue.DuQueueStatus", b =>
+                {
+                    b.Navigation("DuQueues");
+                });
+
+            modelBuilder.Entity("DuQ.Models.DuQueue.DuQueueType", b =>
                 {
                     b.Navigation("DuQueues");
                 });

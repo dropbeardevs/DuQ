@@ -176,30 +176,6 @@ namespace DuQ.Migrations
                 values: new object[]
                         { Guid.NewGuid(), "A&R", DateTime.UtcNow }
             );
-
-            // du_queue_types
-            migrationBuilder.InsertData(
-                table: "du_queue_types",
-                columns: new[] { "id", "type", "modified_utc" },
-                values: new object[]
-                        { Guid.NewGuid(), "Campus ID Card", DateTime.UtcNow }
-            );
-
-            migrationBuilder.InsertData(
-                table: "du_queue_types",
-                columns: new[] { "id", "type", "modified_utc" },
-                values: new object[]
-                        { Guid.NewGuid(), "Cap and Gown", DateTime.UtcNow }
-            );
-
-            migrationBuilder.InsertData(
-                table: "du_queue_types",
-                columns: new[] { "id", "type", "modified_utc" },
-                values: new object[]
-                        { Guid.NewGuid(), "Other", DateTime.UtcNow }
-            );
-
-
         }
 
         /// <inheritdoc />

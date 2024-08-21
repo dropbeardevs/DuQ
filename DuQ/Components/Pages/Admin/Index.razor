@@ -1,59 +1,65 @@
 @page "/admin"
+@using Microsoft.AspNetCore.Authorization
+
+@attribute [Authorize]
 
 <AntiforgeryToken/>
+<AuthorizeView>
+    <MudGrid Class="justify-center">
+        <MudItem xs="12" Class="my-4">
+            <MudText Typo="Typo.h6" Align="Align.Center">Student Services Queue Admin</MudText>
+        </MudItem>
 
-<MudGrid Class="justify-center">
-    <MudItem xs="12" Class="my-4">
-        <MudText Typo="Typo.h6" Align="Align.Center">Student Services Queue Admin</MudText>
-    </MudItem>
+        <MudItem xs="8">
+            <EditForm Model="@Model" OnValidSubmit="@SubmitAsync" FormName="AdminUpdate" novalidate>
+                <ChildContent Context="adminContext">
+                    <MudItem xs="12">
+                        <MudNumericField @bind-Value="Model!.HrcNoStudents"
+                                         Label="HRC Number of Students"
+                                         Variant="Variant.Outlined"
+                                         AutoFocus="true"
 
-    <MudItem xs="8">
-        <EditForm Model="@Model" OnValidSubmit="@SubmitAsync" FormName="AdminUpdate" novalidate>
-            <MudItem xs="12">
-                <MudNumericField @bind-Value="Model!.HrcNoStudents"
-                              Label="HRC Number of Students"
-                              Variant="Variant.Outlined"
-                              AutoFocus="true"
-
-                              Class="py-4">
-                    HRC Number of Students
-                </MudNumericField>
-            </MudItem>
-            <MudItem xs="12">
-                <MudNumericField @bind-Value="Model!.HrcWaitTime"
-                              Label="HRC Wait Time (minutes)"
-                              Variant="Variant.Outlined"
-                              Class="py-4">
-                    HRC Wait Time
-                </MudNumericField>
-            </MudItem>
-            <MudItem xs="12">
-                <MudNumericField @bind-Value="Model!.ArNoStudents"
-                              Label="A&amp;R Number of Students"
-                              Variant="Variant.Outlined"
-                              Class="py-4">
-                    A&amp;R Number of Students
-                </MudNumericField>
-            </MudItem>
-            <MudItem xs="12">
-                <MudNumericField @bind-Value="Model!.ArWaitTime"
-                              Label="A&amp;R Wait Time (minutes)"
-                              Variant="Variant.Outlined"
-                              Class="py-4">
-                    A&amp;R Wait Time
-                </MudNumericField>
-            </MudItem>
-            <MudItem xs="12" Class="my-16">
-                <div style="text-align:center;">
-                    <MudButton Variant="Variant.Filled"
-                               Color="Color.Primary"
-                               FullWidth="true"
-                               ButtonType="ButtonType.Submit"
-                               Style="width: 50%">
-                        Update
-                    </MudButton>
-                </div>
-            </MudItem>
-        </EditForm>
-    </MudItem>
-</MudGrid>
+                                         Class="py-4">
+                            HRC Number of Students
+                        </MudNumericField>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudNumericField @bind-Value="Model!.HrcWaitTime"
+                                         Label="HRC Wait Time (minutes)"
+                                         Variant="Variant.Outlined"
+                                         Class="py-4">
+                            HRC Wait Time
+                        </MudNumericField>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudNumericField @bind-Value="Model!.ArNoStudents"
+                                         Label="A&amp;R Number of Students"
+                                         Variant="Variant.Outlined"
+                                         Class="py-4">
+                            A&amp;R Number of Students
+                        </MudNumericField>
+                    </MudItem>
+                    <MudItem xs="12">
+                        <MudNumericField @bind-Value="Model!.ArWaitTime"
+                                         Label="A&amp;R Wait Time (minutes)"
+                                         Variant="Variant.Outlined"
+                                         Class="py-4">
+                            A&amp;R Wait Time
+                        </MudNumericField>
+                    </MudItem>
+                    <MudItem xs="12" Class="my-16">
+                        <div style="text-align:center;">
+                            <MudButton Variant="Variant.Filled"
+                                       Color="Color.Primary"
+                                       FullWidth="true"
+                                       ButtonType="ButtonType.Submit"
+                                       Style="width: 50%">
+                                Update
+                            </MudButton>
+                        </div>
+                    </MudItem>
+                </ChildContent>
+            </EditForm>
+        </MudItem>
+    </MudGrid>
+</AuthorizeView>

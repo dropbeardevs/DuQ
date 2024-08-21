@@ -1,7 +1,12 @@
 using DuQ.Components;
+using DuQ.Components.Account;
 using DuQ.Contexts;
 using DuQ.Core;
+using DuQ.Data;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using MudBlazor.Services;
 using Serilog;
 
@@ -26,9 +31,22 @@ try
     builder.Services.AddRazorComponents()
            .AddInteractiveServerComponents();
 
+    builder.Services.AddCascadingAuthenticationState();
+    builder.Services.AddScoped<IdentityUserAccessor>();
+    builder.Services.AddScoped<IdentityRedirectManager>();
+    builder.Services.AddScoped<AuthenticationStateProvider, IdentityRevalidatingAuthenticationStateProvider>();
+
+    builder.Services.AddAuthentication(options =>
+           {
+               options.DefaultScheme = IdentityConstants.ApplicationScheme;
+               options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+           })
+           .AddIdentityCookies();
+
     //string dbFileLocation = builder.Configuration.GetValue<string>("DbFileLocation") ?? throw new NullReferenceException("Missing DbFileLocation");
 
     string postgresConnectionString = builder.Configuration.GetConnectionString("DuQueue") ?? throw new NullReferenceException("Missing postgresConnectionString");
+    string postgresIdentityConnectionString = builder.Configuration.GetConnectionString("DuQIdentity") ?? throw new NullReferenceException("Missing postgresIdentityConnectionString");
 
     //builder.Services.AddDbContextFactory<DuqContext>(
     //    options => options.UseSqlite($"Data Source={dbFileLocation}"));
@@ -37,6 +55,36 @@ try
         options => options.UseNpgsql(postgresConnectionString)
                           .UseSnakeCaseNamingConvention()
     );
+
+    builder.Services.AddDbContext<DuQIdentityDbContext>(options =>
+        options.UseNpgsql(postgresIdentityConnectionString));
+    //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+    builder.Services.AddIdentityCore<DuQIdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+           .AddEntityFrameworkStores<DuQIdentityDbContext>()
+           .AddSignInManager()
+           .AddDefaultTokenProviders();
+
+    builder.Services.AddSingleton<IEmailSender<DuQIdentityUser>, EmailSender>();
+
+    builder.Services.ConfigureApplicationCookie(options => {
+        options.ExpireTimeSpan = TimeSpan.FromDays(5);
+        options.SlidingExpiration = true;
+    });
+
+    builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+        options.TokenLifespan = TimeSpan.FromHours(3));
+
+    // builder.Services.AddDbContext<DuQIdentityDbContext>(
+    //     options => options.UseNpgsql(postgresIdentityConnectionString)
+    //                       .UseSnakeCaseNamingConvention()
+    // );
+    //
+    // builder.Services.AddDefaultIdentity<IdentityUser>(
+    //     options => options.SignIn.RequireConfirmedAccount = true)
+    //        .AddEntityFrameworkStores<DuQIdentityDbContext>();
+
+    //builder.Services.AddCascadingAuthenticationState();
 
     builder.Services.AddTransient<DuQ.Components.Pages.Checkin.Domain>();
     builder.Services.AddTransient<DuQ.Components.Pages.Status.Domain>();
@@ -65,6 +113,12 @@ try
 
     app.MapRazorComponents<App>()
        .AddInteractiveServerRenderMode();
+
+    // app.UseAuthentication();
+    // app.UseAuthorization();
+
+    // Add additional endpoints required by the Identity /Account Razor components.
+    app.MapAdditionalIdentityEndpoints();
 
     app.Run();
 }

@@ -5,20 +5,39 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <base href="/"/>
-    <link rel="stylesheet" href="app.css"/>
-    <link rel="stylesheet" href="DuQ.styles.css"/>
     <link rel="icon" type="image/png" href="favicon.png"/>
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <!-- MDB -->
+    <link href="css/mdb/mdb.free.css" rel="stylesheet" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
-    <HeadOutlet @rendermode="InteractiveServer"/>
+    <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="DuQ.styles.css"/>
+    @* <HeadOutlet @rendermode="InteractiveServer"/> *@
+    <HeadOutlet @rendermode="RenderModeForPage"/>
 </head>
 
 <body>
-<Routes @rendermode="InteractiveServer" />
+<Routes @rendermode="RenderModeForPage" />
+@* <Routes @rendermode="InteractiveServer" /> *@
 <div id="reconnect-modal" style="display: none;"></div>
 <script src="_framework/blazor.web.js" autostart="false"></script>
-<script src="boot.js"></script>
+<script src="js/boot.js"></script>
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+<!-- MDB -->
+<script type="text/javascript" src="js/mdb/mdb.umd.min.js"></script>
 </body>
 
 </html>
+
+@code {
+    // This code is to exclude /Account from Interactive Server
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    private IComponentRenderMode? RenderModeForPage =>
+        HttpContext.Request.Path.StartsWithSegments("/Account")
+            ? null
+            : InteractiveServer;
+}
