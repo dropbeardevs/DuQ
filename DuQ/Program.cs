@@ -27,6 +27,9 @@ try
                                                   .Enrich.FromLogContext()
                                                   .WriteTo.Console());
 
+    builder.Services.AddLogging(loggingBuilder =>
+        loggingBuilder.AddSerilog(dispose: true));
+
     // Add services to the container.
     builder.Services.AddRazorComponents()
            .AddInteractiveServerComponents();
