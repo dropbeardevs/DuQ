@@ -15,14 +15,16 @@
             <AuthorizeView>
                 <Authorized>
                     <div class="col-auto align-self-center">
-                        <form action="CampusID/Admin" method="get">
-                            <button type="submit" class="nav-link">Admin</button>
-                        </form>
+                        <NavLink href="CampusID/Admin" class="nav-link">Admin</NavLink>
+                        @* <form action="" method="get"> *@
+                        @*     <button type="submit" class="nav-link">Admin</button> *@
+                        @* </form> *@
                     </div>
                     <div class="col-auto align-self-center">
-                        <form action="Account/Manage" method="get">
-                            <button type="submit" class="nav-link">Manage Account</button>
-                        </form>
+                        <NavLink href="Account/Manage" class="nav-link">Manage Account</NavLink>
+                        @* <form action="Account/Manage" method="get"> *@
+                        @*     <button type="submit" class="nav-link">Manage Account</button> *@
+                        @* </form> *@
                     </div>
                     <div class="col-auto align-self-center">
                         <form action="Account/Logout" method="post">
