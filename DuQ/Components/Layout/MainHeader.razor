@@ -3,24 +3,40 @@
 @inject NavigationManager NavigationManager
 
 <MudAppBar>
-    <MudContainer Style="width:75%; max-width:300px">
-        <a href="https://www.fullcoll.edu">
-            <MudImage Src="images/FC-logo.svg" Alt="Fullerton College"/>
-        </a>
-    </MudContainer>
-    <AuthorizeView>
-        <Authorized>
-            <div>
-                <form action="Account/Logout" method="post">
-                    <AntiforgeryToken/>
-                    <input type="hidden" name="ReturnUrl" value="@currentUrl"/>
-                    <button type="submit" class="nav-link">
-                        <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span> Logout
-                    </button>
-                </form>
+    <div class="container-fluid">
+        <div class="row my-2">
+            <div class="col">
+                <div style="width:75%; max-width:300px">
+                    <a href="https://www.fullcoll.edu">
+                        <MudImage Src="images/FC-logo.svg" Alt="Fullerton College"/>
+                    </a>
+                </div>
             </div>
-        </Authorized>
-    </AuthorizeView>
+            <AuthorizeView>
+                <Authorized>
+                    <div class="col-auto align-self-center">
+                        <form action="CampusID/Admin" method="get">
+                            <button type="submit" class="nav-link">Admin</button>
+                        </form>
+                    </div>
+                    <div class="col-auto align-self-center">
+                        <form action="Account/Manage" method="get">
+                            <button type="submit" class="nav-link">Manage Account</button>
+                        </form>
+                    </div>
+                    <div class="col-auto align-self-center">
+                        <form action="Account/Logout" method="post">
+                            <AntiforgeryToken/>
+                            <input type="hidden" name="ReturnUrl" value="@currentUrl"/>
+                            <button type="submit" class="nav-link">
+                                <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span>Logout
+                            </button>
+                        </form>
+                    </div>
+                </Authorized>
+            </AuthorizeView>
+        </div>
+    </div>
 </MudAppBar>
 
 @code {

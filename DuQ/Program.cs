@@ -63,7 +63,7 @@ try
         options.UseNpgsql(postgresIdentityConnectionString));
     //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-    builder.Services.AddIdentityCore<DuQIdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    builder.Services.AddIdentityCore<DuQIdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
            .AddEntityFrameworkStores<DuQIdentityDbContext>()
            .AddSignInManager()
            .AddDefaultTokenProviders();
