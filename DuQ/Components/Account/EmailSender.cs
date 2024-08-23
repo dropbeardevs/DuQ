@@ -25,14 +25,9 @@ public class EmailSender: IEmailSender<DuQIdentityUser>
     }
 
     public Task SendConfirmationLinkAsync(DuQIdentityUser user, string email,
-        string confirmationLink) => DoNothing(); //SendEmailAsync(email, "Confirm your email",
-        //     "Please confirm your account by " +
-        //     $"<a href='{confirmationLink}'>clicking here</a>.");
-
-    public async Task DoNothing()
-    {
-        await Task.Delay(1);
-    }
+        string confirmationLink) => SendEmailAsync(email, "Confirm your email",
+             "Please confirm your account by " +
+             $"<a href='{confirmationLink}'>clicking here</a>.");
 
     public Task SendPasswordResetLinkAsync(DuQIdentityUser user, string email,
         string resetLink) => SendEmailAsync(email, "Reset your password",
@@ -65,7 +60,7 @@ public class EmailSender: IEmailSender<DuQIdentityUser>
         }
         else
         {
-            Log.Information("Email sent failed");
+            Log.Error("Email send failed");
         }
     }
 }
