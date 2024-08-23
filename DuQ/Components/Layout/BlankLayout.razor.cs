@@ -3,7 +3,7 @@ using MudBlazor.Utilities;
 
 namespace DuQ.Components.Layout;
 
-public partial class MainLayout
+public partial class BlankLayout
 {
     private static readonly MudColor FullertonCollegeColor = new("#0f406b");
 

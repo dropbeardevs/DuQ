@@ -1,0 +1,31 @@
+@page "/CampusID/StatusClean"
+@layout BlankLayout
+
+<AntiforgeryToken/>
+
+@if (_isLoading)
+
+{
+    <MudGrid Justify="Justify.Center" Style="height: 80vh; align-items: center;">
+        <MudItem>
+            <MudProgressCircular Color="Color.Default" Size="Size.Large" Indeterminate="true"/>
+        </MudItem>
+    </MudGrid>
+}
+else
+{
+    <MudGrid Class="justify-center">
+        <MudItem xs="12" Class="my-4">
+            <MudText Typo="Typo.h6" Align="Align.Center">Student Services Queue Status</MudText>
+        </MudItem>
+
+        <MudItem xs="11">
+            <MudDataGrid Items="_statusItems">
+                <Columns>
+                    <PropertyColumn Property="x => x.QueueLocation" Title="Location" />
+                    <PropertyColumn Property="x => MinutesText(x.TotalWaitTime)" Title="Estimated Wait Time" />
+                </Columns>
+            </MudDataGrid>
+        </MudItem>
+    </MudGrid>
+}
