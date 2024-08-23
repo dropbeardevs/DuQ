@@ -14,7 +14,7 @@ public partial class Register
 {
     private IEnumerable<IdentityError>? identityErrors;
 
-    [Inject] private IConfiguration? Configuration { get; set; }
+    [Inject] private IConfiguration Configuration { get; set; } = null!;
 
     [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
 
@@ -30,7 +30,7 @@ public partial class Register
 
     protected override void OnInitialized()
     {
-        AllowedRegisterDomains = Configuration!.GetSection("AllowedRegisterDomains").Get<List<string>>();
+        AllowedRegisterDomains = Configuration.GetSection("AllowedRegisterDomains").Get<List<string>>() ?? [];
     }
 
     public async Task RegisterUser(EditContext editContext)

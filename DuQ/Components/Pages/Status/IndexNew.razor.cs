@@ -6,8 +6,8 @@ namespace DuQ.Components.Pages.Status;
 
 public partial class IndexNew
 {
-    [Inject] private Domain? Domain { get; set; }
-    [Inject] private DbSaveNotifier? DbSaveNotifier { get; set; }
+    [Inject] private Domain Domain { get; set; } = null!;
+    [Inject] private DbSaveNotifier DbSaveNotifier { get; set; } = null!;
 
     private List<QueueStatusDto> _statusItems = [];
     private bool _isLoading;
@@ -21,7 +21,7 @@ public partial class IndexNew
 
     public void Dispose()
     {
-        DbSaveNotifier.OnDbSave -= ReloadStatusItemsHandler;
+        DbSaveNotifier!.OnDbSave -= ReloadStatusItemsHandler;
     }
 
     private async Task LoadStatusItemsAsync()

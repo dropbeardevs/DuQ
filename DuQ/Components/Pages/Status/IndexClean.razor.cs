@@ -8,8 +8,8 @@ namespace DuQ.Components.Pages.Status;
 
 public partial class IndexClean : IDisposable
 {
-    [Inject] private Domain? Domain { get; set; }
-    [Inject] private DbSaveNotifier? DbSaveNotifier { get; set; }
+    [Inject] private Domain Domain { get; set; } = null!;
+    [Inject] private DbSaveNotifier DbSaveNotifier { get; set; } = null!;
 
     private List<QueueStatusDto> _statusItems = [];
     private bool _isLoading;

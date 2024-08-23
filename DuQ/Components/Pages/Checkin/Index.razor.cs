@@ -6,14 +6,14 @@ namespace DuQ.Components.Pages.Checkin;
 
 public partial class Index
 {
-    [Inject] private Domain? Domain { get; set; }
+    [Inject] private Domain Domain { get; set; } = null!;
 
     [SupplyParameterFromForm] private CheckinModel? Model { get; set; }
 
     private List<string> _queueLocations = [];
     private bool _isCheckedIn;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         _isCheckedIn = false;
     }

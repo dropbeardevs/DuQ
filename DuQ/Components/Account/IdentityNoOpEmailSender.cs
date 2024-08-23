@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using DuQ.Data;
-using DuQ.Data;
 
 namespace DuQ.Components.Account;
 
