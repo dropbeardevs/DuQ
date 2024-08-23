@@ -78,16 +78,20 @@ try
     builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
         options.TokenLifespan = TimeSpan.FromHours(3));
 
-    // builder.Services.AddDbContext<DuQIdentityDbContext>(
-    //     options => options.UseNpgsql(postgresIdentityConnectionString)
-    //                       .UseSnakeCaseNamingConvention()
-    // );
-    //
-    // builder.Services.AddDefaultIdentity<IdentityUser>(
-    //     options => options.SignIn.RequireConfirmedAccount = true)
-    //        .AddEntityFrameworkStores<DuQIdentityDbContext>();
+    // Set up CORS
+    string[] allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>() ?? throw new NullReferenceException("Missing Allowed Origins");
 
-    //builder.Services.AddCascadingAuthenticationState();
+    // Add services to the container.
+    builder.Services.AddCors(options =>
+    {
+        options.AddPolicy("DuQueueCors", policy =>
+        {
+            policy.WithOrigins(allowedOrigins)
+                  .SetIsOriginAllowedToAllowWildcardSubdomains()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+    });
 
     builder.Services.AddTransient<DuQ.Components.Pages.Checkin.Domain>();
     builder.Services.AddTransient<DuQ.Components.Pages.Status.Domain>();
@@ -113,6 +117,8 @@ try
 
     app.UseStaticFiles();
     app.UseAntiforgery();
+
+    app.UseCors("DuQueueCors");
 
     app.MapRazorComponents<App>()
        .AddInteractiveServerRenderMode();
