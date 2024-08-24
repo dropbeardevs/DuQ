@@ -38,15 +38,23 @@
                         </div>
                     </MudHidden>
                     <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
-                        <div class="col-auto align-self-center">
+                        <div class="col-auto align-self-end">
                             <MudMenu Icon="@Icons.Material.Filled.Menu"
                                      Size="Size.Large"
                                      Color="Color.Tertiary"
                                      AnchorOrigin="Origin.BottomRight"
                                      AriaLabel="Open user menu">
-                                <MudMenuItem>Profile</MudMenuItem>
-                                <MudMenuItem>My account</MudMenuItem>
-                                <MudMenuItem>Logout</MudMenuItem>
+                                <MudMenuItem Href="CampusID/Admin">Admin</MudMenuItem>
+                                <MudMenuItem Href="Account/Manage">Manage Account</MudMenuItem>
+                                <MudMenuItem>
+                                    <form action="Account/Logout" method="post">
+                                        <AntiforgeryToken/>
+                                        <input type="hidden" name="ReturnUrl" value="@currentUrl"/>
+                                        <button type="submit" class="nav-link">
+                                            <span class="bi bi-arrow-bar-left-nav-menu" aria-hidden="true"></span>Logout
+                                        </button>
+                                    </form>
+                                    </MudMenuItem>
                             </MudMenu>
                         </div>
                     </MudHidden>
