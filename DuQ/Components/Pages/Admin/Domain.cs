@@ -197,7 +197,7 @@ public class Domain
 
             context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
 
-            context.UpdateRange(waitTimes);
+            context.DuQueueWaitTimes.UpdateRange(waitTimes);
 
             await context.SaveChangesAsync();
         }

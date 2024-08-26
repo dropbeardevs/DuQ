@@ -6,4 +6,6 @@ public class QueueStatusDto
     public int QueueWaitTime { get; set; }
     public int QueueNoStudents { get; set;  }
     public int TotalWaitTime { get; set; }
+    public bool QueueIsOpen { get; set; }
+    public string? DeptUrl { get; set; }
 }

@@ -44,8 +44,13 @@ public partial class IndexClean : IDisposable
         await this.InvokeAsync(StateHasChanged);
     }
 
-    private string MinutesText(int minutes)
+    private string MinutesText(int minutes, bool isQueueOpen)
     {
-        return minutes.ToString() + " minutes";
+        if (isQueueOpen)
+        {
+            return minutes + " minutes";
+        }
+
+        return "Closed";
     }
 }

@@ -21,9 +21,15 @@ public partial class Index
         Model!.HrcWaitTimeId = _waitTimes[0].Id;
         Model!.HrcNoStudents = _waitTimes[0].QueueNoStudents;
         Model!.HrcWaitTime = _waitTimes[0].WaitTime;
+        Model!.HrcIsOpen = _waitTimes[0].IsOpen;
         Model!.ArWaitTimeId = _waitTimes[1].Id;
         Model!.ArNoStudents = _waitTimes[1].QueueNoStudents;
         Model!.ArWaitTime = _waitTimes[1].WaitTime;
+        Model!.ArIsOpen = _waitTimes[1].IsOpen;
+        Model!.ArWindowWaitTimeId = _waitTimes[2].Id;
+        Model!.ArWindowNoStudents = _waitTimes[2].QueueNoStudents;
+        Model!.ArWindowWaitTime = _waitTimes[2].WaitTime;
+        Model!.ArWindowIsOpen = _waitTimes[2].IsOpen;
     }
 
     private async Task SubmitAsync()
@@ -31,9 +37,15 @@ public partial class Index
         _waitTimes[0].Id = Model!.HrcWaitTimeId;
         _waitTimes[0].QueueNoStudents = Model!.HrcNoStudents;
         _waitTimes[0].WaitTime = Model!.HrcWaitTime;
+        _waitTimes[0].IsOpen = Model!.HrcIsOpen;
         _waitTimes[1].Id = Model!.ArWaitTimeId;
         _waitTimes[1].QueueNoStudents = Model!.ArNoStudents;
         _waitTimes[1].WaitTime = Model!.ArWaitTime;
+        _waitTimes[1].IsOpen = Model!.ArIsOpen;
+        _waitTimes[2].Id = Model!.ArWindowWaitTimeId;
+        _waitTimes[2].QueueNoStudents = Model!.ArWindowNoStudents;
+        _waitTimes[2].WaitTime = Model!.ArWindowWaitTime;
+        _waitTimes[2].IsOpen = Model!.ArWindowIsOpen;
 
         await Domain!.UpdateWaitTimesAsync(_waitTimes);
     }

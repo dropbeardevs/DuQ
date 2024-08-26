@@ -6,5 +6,7 @@ public class DuQueueWaitTime
     public string Location { get; set; } = string.Empty;
     public int WaitTime { get; set; }
     public int QueueNoStudents { get; set; }
+    public string? DeptUrl { get; set; }
+    public bool IsOpen { get; set; }
     public DateTime ModifiedUtc { get; set; }
 }

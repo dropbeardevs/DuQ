@@ -6,61 +6,127 @@
 
 <AntiforgeryToken/>
 <AuthorizeView>
-    <MudGrid Class="justify-center">
+    <MudGrid Class="container-fluid justify-center">
         <MudItem xs="12" Class="my-4">
-            <MudText Typo="Typo.h6" Align="Align.Center">Campus ID Queue Admin</MudText>
+            <MudText Typo="Typo.h5" Align="Align.Center">Campus ID Queue Admin</MudText>
         </MudItem>
-
-        <MudItem xs="8">
-            <EditForm Model="@Model" OnValidSubmit="@SubmitAsync" FormName="AdminUpdate" novalidate>
-                <ChildContent Context="adminContext">
-                    <MudItem xs="12">
-                        <MudNumericField @bind-Value="Model!.HrcNoStudents"
-                                         Label="HRC Number of Students"
-                                         Variant="Variant.Outlined"
-                                         AutoFocus="true"
-
-                                         Class="py-4">
-                            HRC Number of Students
-                        </MudNumericField>
-                    </MudItem>
-                    <MudItem xs="12">
-                        <MudNumericField @bind-Value="Model!.HrcWaitTime"
-                                         Label="HRC Wait Time (minutes)"
-                                         Variant="Variant.Outlined"
-                                         Class="py-4">
-                            HRC Wait Time
-                        </MudNumericField>
-                    </MudItem>
-                    <MudItem xs="12">
-                        <MudNumericField @bind-Value="Model!.ArNoStudents"
-                                         Label="A&amp;R Number of Students"
-                                         Variant="Variant.Outlined"
-                                         Class="py-4">
-                            A&amp;R Number of Students
-                        </MudNumericField>
-                    </MudItem>
-                    <MudItem xs="12">
-                        <MudNumericField @bind-Value="Model!.ArWaitTime"
-                                         Label="A&amp;R Wait Time (minutes)"
-                                         Variant="Variant.Outlined"
-                                         Class="py-4">
-                            A&amp;R Wait Time
-                        </MudNumericField>
-                    </MudItem>
-                    <MudItem xs="12" Class="my-16">
-                        <div style="text-align:center;">
-                            <MudButton Variant="Variant.Filled"
-                                       Color="Color.Primary"
-                                       FullWidth="true"
-                                       ButtonType="ButtonType.Submit"
-                                       Style="width: 50%">
-                                Update
-                            </MudButton>
-                        </div>
-                    </MudItem>
-                </ChildContent>
-            </EditForm>
-        </MudItem>
+        <EditForm Model="@Model" OnValidSubmit="@SubmitAsync" FormName="AdminUpdate" novalidate>
+            <ChildContent Context="adminContext">
+                <MudPaper Class="flex-auto d-flex p-2 my-4" Width="100%">
+                    <MudGrid Class="justify-center">
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.h6" Align="Align.Center">Hornets Resource Center</MudText>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField @bind-Value="Model!.HrcNoStudents"
+                                             Label="HRC Number of Students"
+                                             Variant="Variant.Outlined"
+                                             AutoFocus="true"
+                                             Class="p-2">
+                                HRC Number of Students
+                            </MudNumericField>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField @bind-Value="Model!.HrcWaitTime"
+                                             Label="HRC Wait Time (minutes)"
+                                             Variant="Variant.Outlined"
+                                             Class="p-2">
+                                HRC Wait Time
+                            </MudNumericField>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudSelect @bind-Value="Model!.HrcIsOpen"
+                                       T="bool"
+                                       Label="Queue Status"
+                                       Variant="Variant.Outlined"
+                                       Placeholder="Please Select"
+                                       Class="p-2">
+                                <MudSelectItem Value="true">Open</MudSelectItem>
+                                <MudSelectItem Value="false">Closed</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+                <MudPaper Class="flex-auto d-flex p-2 my-4" Width="100%">
+                    <MudGrid Class="justify-center">
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.h6" Align="Align.Center">Admissions &amp; Records Campus ID</MudText>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField @bind-Value="Model!.ArNoStudents"
+                                             Label="A&amp;R Campus ID Number of Students"
+                                             Variant="Variant.Outlined"
+                                             Class="p-2">
+                                A&amp;R Campus ID Number of Students
+                            </MudNumericField>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField @bind-Value="Model!.ArWaitTime"
+                                             Label="A&amp;R Campus ID Wait Time (minutes)"
+                                             Variant="Variant.Outlined"
+                                             Class="p-2">
+                                A&amp;R Campus ID Wait Time
+                            </MudNumericField>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudSelect @bind-Value="Model!.ArIsOpen"
+                                       T="bool"
+                                       Label="Queue Status"
+                                       Variant="Variant.Outlined"
+                                       Placeholder="Please Select"
+                                       Class="p-2">
+                                <MudSelectItem Value="true">Open</MudSelectItem>
+                                <MudSelectItem Value="false">Closed</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+                <MudPaper Class="flex-auto d-flex p-2 my-4" Width="100%">
+                    <MudGrid Class="justify-center">
+                        <MudItem xs="12">
+                            <MudText Typo="Typo.h6" Align="Align.Center">Admissions &amp; Records Window</MudText>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField @bind-Value="Model!.ArWindowNoStudents"
+                                             Label="A&amp;R Window Number of Students"
+                                             Variant="Variant.Outlined"
+                                             Class="p-2">
+                                A&amp;R Window Number of Students
+                            </MudNumericField>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudNumericField @bind-Value="Model!.ArWindowWaitTime"
+                                             Label="A&amp;R Window Wait Time (minutes)"
+                                             Variant="Variant.Outlined"
+                                             Class="p-2">
+                                A&amp;R Window Wait Time
+                            </MudNumericField>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudSelect @bind-Value="Model!.ArWindowIsOpen"
+                                       T="bool"
+                                       Label="Queue Status"
+                                       Variant="Variant.Outlined"
+                                       Placeholder="Please Select"
+                                       Class="p-2">
+                                <MudSelectItem Value="true">Open</MudSelectItem>
+                                <MudSelectItem Value="false">Closed</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+                <MudItem xs="12" Class="my-16">
+                    <div style="text-align:center;">
+                        <MudButton Variant="Variant.Filled"
+                                   Color="Color.Primary"
+                                   FullWidth="true"
+                                   ButtonType="ButtonType.Submit"
+                                   Style="width: 50%">
+                            Update
+                        </MudButton>
+                    </div>
+                </MudItem>
+            </ChildContent>
+        </EditForm>
     </MudGrid>
 </AuthorizeView>

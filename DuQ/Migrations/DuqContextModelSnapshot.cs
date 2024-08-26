@@ -152,6 +152,16 @@ namespace DuQ.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<string>("DeptUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("dept_url");
+
+                    b.Property<bool>("IsOpen")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnName("is_open");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("text")

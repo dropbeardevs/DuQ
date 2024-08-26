@@ -23,7 +23,7 @@ else
             <MudDataGrid Items="_statusItems">
                 <Columns>
                     <PropertyColumn Property="x => x.QueueLocation" Title="Location" />
-                    <PropertyColumn Property="x => MinutesText(x.TotalWaitTime)" Title="Estimated Wait Time" />
+                    <PropertyColumn Property="x => MinutesText(x.TotalWaitTime, x.QueueIsOpen)" Title="Estimated Wait Time" />
                 </Columns>
             </MudDataGrid>
         </MudItem>

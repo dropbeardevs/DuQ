@@ -22,9 +22,20 @@ else
             <MudDataGrid Items="_statusItems">
                 <Columns>
                     <PropertyColumn Property="x => x.QueueLocation" Title="Location" />
-                    <PropertyColumn Property="x => MinutesText(x.TotalWaitTime)" Title="Estimated Wait Time" />
+                    <PropertyColumn Property="x => MinutesText(x.TotalWaitTime, x.QueueIsOpen)" Title="Estimated Wait Time"/>
+                    <TemplateColumn CellClass="d-flex text-center" Title="More Info">
+                        <CellTemplate>
+                            <MudLink Href="@(context.Item.DeptUrl)" Target="_blank" Class="align-self-center">
+                                <MudIcon Size="@Size.Small" Icon="@Icons.Material.Filled.OpenInNew"/>
+                            </MudLink>
+                        </CellTemplate>
+                    </TemplateColumn>
                 </Columns>
             </MudDataGrid>
+        </MudItem>
+
+        <MudItem xs="12" Class="text-center">
+            <MudText Typo="Typo.body2">For more information, please visit <MudLink Href="https://admissions.fullcoll.edu/student-id" Target="_blank">https://admissions.fullcoll.edu/student-id</MudLink><MudText></MudText></MudText>
         </MudItem>
     </MudGrid>
 }

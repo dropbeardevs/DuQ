@@ -167,14 +167,21 @@ namespace DuQ.Migrations
                 table: "du_queue_locations",
                 columns: new[] { "id", "location", "modified_utc" },
                 values: new object[]
-                        { Guid.NewGuid(), "HRC", DateTime.UtcNow }
+                        { Guid.NewGuid(), "Hornets Resource Center", DateTime.UtcNow }
             );
 
             migrationBuilder.InsertData(
                 table: "du_queue_locations",
                 columns: new[] { "id", "location", "modified_utc" },
                 values: new object[]
-                        { Guid.NewGuid(), "A&R", DateTime.UtcNow }
+                        { Guid.NewGuid(), "Admissions & Records Campus ID", DateTime.UtcNow }
+            );
+
+            migrationBuilder.InsertData(
+                table: "du_queue_locations",
+                columns: new[] { "id", "location", "modified_utc" },
+                values: new object[]
+                        { Guid.NewGuid(), "Admissions & Records Window", DateTime.UtcNow }
             );
         }
 

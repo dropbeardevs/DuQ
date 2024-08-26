@@ -112,9 +112,18 @@ public class DuqContext : DbContext
                     .IsRequired();
 
         modelBuilder.Entity<DuQueueWaitTime>()
+                    .Property(qw => qw.IsOpen)
+                    .IsRequired();
+
+        modelBuilder.Entity<DuQueueWaitTime>()
+                    .Property(qw => qw.IsOpen)
+                    .HasDefaultValue(false);
+
+        modelBuilder.Entity<DuQueueWaitTime>()
                     .Property(qw => qw.ModifiedUtc)
                     .IsRequired();
 
+        // QueueType
         modelBuilder.Entity<DuQueueType>()
                     .HasKey(qt => qt.Id);
 

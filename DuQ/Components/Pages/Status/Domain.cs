@@ -21,13 +21,18 @@ public class Domain
     {
         await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
-        var waitTimes = await context.DuQueueWaitTimes.Select(item => new QueueStatusDto
-                                                                      {
-                                                                          QueueLocation = item.Location,
-                                                                          QueueNoStudents = item.QueueNoStudents,
-                                                                          QueueWaitTime = item.WaitTime,
-                                                                          TotalWaitTime = item.QueueNoStudents * item.WaitTime,
-                                                                      }).ToListAsync();
+        var waitTimes = await context.DuQueueWaitTimes
+                                     .OrderBy(w => w.Location)
+                                     .Select(item => new QueueStatusDto
+                                                     {
+                                                         QueueLocation = item.Location,
+                                                         QueueNoStudents = item.QueueNoStudents,
+                                                         QueueWaitTime = item.WaitTime,
+                                                         TotalWaitTime = item.QueueNoStudents * item.WaitTime,
+                                                         QueueIsOpen = item.IsOpen,
+                                                         DeptUrl = item.DeptUrl
+                                                     })
+                                     .ToListAsync();
 
         return waitTimes;
     }
@@ -37,17 +42,18 @@ public class Domain
         await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
         var numberStudents = await context.DuQueues
-                                    .Include(q => q.QueueLocation)
-                                    .Include(q => q.QueueStatus)
-                                    .Where(q => q.QueueStatus.Status == "In Queue")
-                                    .CountAsync();
+                                          .Include(q => q.QueueLocation)
+                                          .Include(q => q.QueueStatus)
+                                          .Where(q => q.QueueStatus.Status == "In Queue")
+                                          .CountAsync();
 
         var waitTimes = await context.DuQueueWaitTimes.Select(item => new QueueStatusDto
                                                                       {
                                                                           QueueLocation = item.Location,
                                                                           QueueNoStudents = item.QueueNoStudents,
                                                                           QueueWaitTime = item.WaitTime,
-                                                                          TotalWaitTime = item.QueueNoStudents * item.WaitTime,
+                                                                          TotalWaitTime = item.QueueNoStudents *
+                                                                              item.WaitTime,
                                                                       }).ToListAsync();
 
         return waitTimes;

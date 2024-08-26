@@ -34,18 +34,23 @@ public partial class Index : IDisposable
         _statusItems = await Domain.GetStatusItemsAsync2();
 
         _isLoading = false;
-        await this.InvokeAsync(StateHasChanged);
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task ReloadStatusItemsHandler()
     {
         _statusItems = await Domain.GetStatusItemsAsync2();
 
-        await this.InvokeAsync(StateHasChanged);
+        await InvokeAsync(StateHasChanged);
     }
 
-    private string MinutesText(int minutes)
+    private string MinutesText(int minutes, bool isQueueOpen)
     {
-        return minutes.ToString() + " minutes";
+        if (isQueueOpen)
+        {
+            return minutes + " minutes";
+        }
+
+        return "Closed";
     }
 }
