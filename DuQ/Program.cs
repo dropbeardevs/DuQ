@@ -3,6 +3,7 @@ using DuQ.Components.Account;
 using DuQ.Contexts;
 using DuQ.Core;
 using DuQ.Data;
+using DuQ.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -64,6 +65,7 @@ try
     //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
     builder.Services.AddIdentityCore<DuQIdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+           .AddRoles<DuQIdentityRole>()
            .AddEntityFrameworkStores<DuQIdentityDbContext>()
            .AddSignInManager()
            .AddDefaultTokenProviders();
@@ -97,6 +99,7 @@ try
     builder.Services.AddTransient<DuQ.Components.Pages.Status.Domain>();
     builder.Services.AddTransient<DuQ.Components.Pages.Admin.Domain>();
     builder.Services.AddSingleton<DbSaveNotifier>();
+    builder.Services.AddTransient<IdentityService>();
 
     //builder.Services.AddHttpClient();
     builder.Services.AddMudServices();
