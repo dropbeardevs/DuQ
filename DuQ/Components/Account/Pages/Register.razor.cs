@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using DuQ.Components.Account.Pages.Manage;
-using DuQ.Data;
+using DuQ.Contexts;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;

@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using DuQ.Data;
+using DuQ.Contexts;
 
 namespace DuQ.Components.Account;
 

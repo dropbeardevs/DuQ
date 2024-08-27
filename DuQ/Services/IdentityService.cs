@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Security.Claims;
-using DuQ.Data;
+using DuQ.Contexts;
+using DuQ.Models.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -29,20 +30,20 @@ public class IdentityService
 
     public Dictionary<string, string?> GetClaimsList => _claimTypes;
 
-    public async Task<dynamic> GetRoleListAsync()
+    public async Task<(int, IEnumerable<dynamic>)> GetRoleListAsync()
     {
         var qry = _roleManager.Roles.Include(r => r.Claims).OrderBy(r => r.Name);
 
         int total = await qry.CountAsync();
 
         var data = (await qry.ToArrayAsync()).Select(r => new
-                                                          {
-                                                              r.Id,
-                                                              r.Name,
-                                                              Claims = r.Claims.Select(c => new KeyValuePair<string, string>(_claimTypes.Single(x => x.Value == c.ClaimType).Key, c.ClaimValue!)),
-                                                          });
+                                                            {
+                                                                Id = r.Id,
+                                                                Name = r.Name,
+                                                                Claims = r.Claims.Select(c => new KeyValuePair<string, string?>(_claimTypes.Single(x => x.Value == c.ClaimType).Key, c.ClaimValue!)),
+                                                            });
 
-        return new { total, data };
+        return (total, data);
     }
 
     public async Task<IResult> CreateRole(string name)
@@ -130,32 +131,32 @@ public class IdentityService
         }
     }
 
-    public async Task<dynamic> UserList(int skip, int limit, string? sort, string? search)
-    {
-        var qry = _userManager.Users.Include(u => u.Roles).Include(u => u.Claims)
-                              .Where(u => string.IsNullOrWhiteSpace(search) || u.Email!.Contains(search));
-
-        int total = await qry.CountAsync();
-
-        if (sort?.Split(' ') is [var col, var dir])
-        {
-            if (dir == "ASC")
-                qry = qry.OrderBy(x => EF.Property<string>(x, col));
-            else
-                qry = qry.OrderByDescending(x => EF.Property<string>(x, col));
-        }
-
-        var data = (await qry.Skip(skip).Take(limit).ToArrayAsync()).Select(u => new
-            {
-                u.Id,
-                u.Email,
-                LockedOut = u.LockoutEnd == null ? string.Empty : "Yes",
-                Roles = u.Roles.Select(r => _roles[r.RoleId]),
-                Claims = u.Claims.Select(c => new KeyValuePair<string, string>(_claimTypes.Single(x => x.Value == c.ClaimType).Key, c.ClaimValue!)),
-                DisplayName = u.Claims.FirstOrDefault(c => c.ClaimType == ClaimTypes.Name)?.ClaimValue,
-                u.UserName
-            });
-
-        return new { total, data };
-    }
+    // public async Task<dynamic> UserList(int skip, int limit, string? sort, string? search)
+    // {
+    //     var qry = _userManager.Users.Include(u => u.Roles).Include(u => u.Claims)
+    //                           .Where(u => string.IsNullOrWhiteSpace(search) || u.Email!.Contains(search));
+    //
+    //     int total = await qry.CountAsync();
+    //
+    //     if (sort?.Split(' ') is [var col, var dir])
+    //     {
+    //         if (dir == "ASC")
+    //             qry = qry.OrderBy(x => EF.Property<string>(x, col));
+    //         else
+    //             qry = qry.OrderByDescending(x => EF.Property<string>(x, col));
+    //     }
+    //
+    //     var data = (await qry.Skip(skip).Take(limit).ToArrayAsync()).Select(u => new
+    //         {
+    //             u.Id,
+    //             u.Email,
+    //             LockedOut = u.LockoutEnd == null ? string.Empty : "Yes",
+    //             Roles = u.Roles.Select(r => _roles[r.RoleId]),
+    //             Claims = u.Claims.Select(c => new KeyValuePair<string, string>(_claimTypes.Single(x => x.Value == c.ClaimType).Key, c.ClaimValue!)),
+    //             DisplayName = u.Claims.FirstOrDefault(c => c.ClaimType == ClaimTypes.Name)?.ClaimValue,
+    //             u.UserName
+    //         });
+    //
+    //     return new { total, data };
+    // }
 }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using DuQ.Components.Account.Pages;
 using DuQ.Components.Account.Pages.Manage;
-using DuQ.Data;
+using DuQ.Contexts;
 
 namespace Microsoft.AspNetCore.Routing;
 

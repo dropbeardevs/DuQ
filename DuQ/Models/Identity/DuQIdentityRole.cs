@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace DuQ.Data;
+namespace DuQ.Models.Identity;
 
 public class DuQIdentityRole : IdentityRole
 {

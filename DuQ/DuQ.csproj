@@ -94,7 +94,14 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Data\" />
+      <Folder Include="Migrations\DuQIdentityDb\" />
       <Folder Include="Styles\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Migrations\DuQIdentityDb\DuQIdentityDbContextModelSnapshot.cs" />
+      <Compile Remove="Migrations\DuQIdentityDb\20240826064758_CreateIdentity.Designer.cs" />
     </ItemGroup>
 
 </Project>

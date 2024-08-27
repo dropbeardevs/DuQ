@@ -2,8 +2,8 @@
 
 @using Microsoft.AspNetCore.Http.Features
 @using Microsoft.AspNetCore.Identity
-@using DuQ.Data
-@using IdentityUser = DuQ.Data.DuQIdentityUser
+@using DuQ.Contexts
+@using IdentityUser = DuQ.Contexts.DuQIdentityUser
 
 @inject UserManager<IdentityUser> UserManager
 @inject SignInManager<IdentityUser> SignInManager
