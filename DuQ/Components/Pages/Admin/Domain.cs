@@ -172,13 +172,23 @@ public class Domain
         }
     }
 
-    public async Task<List<DuQueueWaitTime>> GetWaitTimesAsync()
+    public async Task<List<WaitTimeDto>> GetWaitTimesAsync()
     {
         try
         {
             await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
-            var waitTimes = await context.DuQueueWaitTimes.ToListAsync();
+            var waitTimes = await context.DuQueueWaitTimes
+                                         .Select(item => new WaitTimeDto
+                                                         {
+                                                             Id = item.Id,
+                                                             Location = item.Location,
+                                                             NumberStudents = item.QueueNoStudents,
+                                                             WaitTime = item.WaitTime,
+                                                             IsOpen = item.IsOpen
+                                                         }
+                                         )
+                                         .ToListAsync();
 
             return waitTimes;
         }
@@ -189,21 +199,36 @@ public class Domain
         }
     }
 
-    public async Task UpdateWaitTimesAsync(List<DuQueueWaitTime> waitTimes)
+    public async Task UpdateWaitTimesAsync(List<WaitTimeDto> waitTimes)
     {
         try
         {
+            //var hrcWaitTime = waitTimes.FirstOrDefault(w => w.Id == Model!.HrcWaitTimeId);
+            //
+            // hrcWaitTime!.QueueNoStudents = Model!.HrcNoStudents;
+            // hrcWaitTime.WaitTime = Model!.HrcWaitTime;
+            // hrcWaitTime.IsOpen = Model!.HrcIsOpen;
+
             await using DuqContext context = await _contextFactory.CreateDbContextAsync();
 
             context.SavedChanges += _dbSaveNotifier.NotifyDbSaved;
 
-            context.DuQueueWaitTimes.UpdateRange(waitTimes);
+            foreach (var waitTime in waitTimes)
+            {
+                var dbWaitTime = context.DuQueueWaitTimes.Single(w => w.Id == waitTime.Id);
+
+                dbWaitTime.WaitTime = waitTime.WaitTime;
+                dbWaitTime.QueueNoStudents = waitTime.NumberStudents;
+                dbWaitTime.IsOpen = waitTime.IsOpen;
+
+                context.DuQueueWaitTimes.Update(dbWaitTime);
+            }
 
             await context.SaveChangesAsync();
         }
         catch (Exception ex)
         {
-            Log.Error(ex, "Error getting locations");
+            Log.Error(ex, "Error updating locations");
             throw;
         }
     }
