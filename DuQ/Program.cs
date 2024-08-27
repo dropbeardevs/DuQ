@@ -2,6 +2,7 @@ using DuQ.Components;
 using DuQ.Components.Account;
 using DuQ.Contexts;
 using DuQ.Core;
+using DuQ.Models.Identity;
 using DuQ.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -63,13 +64,13 @@ try
         options.UseNpgsql(postgresIdentityConnectionString));
     //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-    builder.Services.AddIdentityCore<DuQIdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-           //.AddRoles<DuQIdentityRole>()
+    builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+           .AddRoles<IdentityRole>()
            .AddEntityFrameworkStores<DuQIdentityDbContext>()
            .AddSignInManager()
            .AddDefaultTokenProviders();
 
-    builder.Services.AddSingleton<IEmailSender<DuQIdentityUser>, EmailSender>();
+    builder.Services.AddSingleton<IEmailSender<ApplicationUser>, EmailSender>();
 
     builder.Services.ConfigureApplicationCookie(options => {
         options.ExpireTimeSpan = TimeSpan.FromDays(5);
@@ -98,7 +99,7 @@ try
     builder.Services.AddTransient<DuQ.Components.Pages.Status.Domain>();
     builder.Services.AddTransient<DuQ.Components.Pages.Admin.Domain>();
     builder.Services.AddSingleton<DbSaveNotifier>();
-    builder.Services.AddTransient<IdentityService>();
+    //builder.Services.AddTransient<IdentityService>();
 
     //builder.Services.AddHttpClient();
     builder.Services.AddMudServices();

@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Security.Claims;
 using DuQ.Contexts;
 using DuQ.Models.Core;
+using DuQ.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -10,47 +11,60 @@ namespace DuQ.Services;
 
 public class IdentityService
 {
-    private readonly UserManager<DuQIdentityUser> _userManager;
-    private readonly RoleManager<DuQIdentityRole> _roleManager;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly RoleManager<ApplicationRole> _roleManager;
 
     private Dictionary<string, string?> _roles;
     private Dictionary<string, string?> _claimTypes;
 
-    public IdentityService(UserManager<DuQIdentityUser> userManager, RoleManager<DuQIdentityRole> roleManager)
+    public IdentityService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
 
-        _roles = roleManager.Roles.OrderBy(r => r.Name).ToDictionary(r => r.Id, r => r.Name);
-        var fldInfo = typeof(ClaimTypes).GetFields(BindingFlags.Static | BindingFlags.Public);
-        _claimTypes = fldInfo.OrderBy(c => c.Name).ToDictionary(c => c.Name, c => (string?)c.GetValue(null));
+        CheckAndCreateRoles();
+
+        //_roles = roleManager.Roles.OrderBy(r => r.Name).ToDictionary(r => r.Id, r => r.Name);
+        //var fldInfo = typeof(ClaimTypes).GetFields(BindingFlags.Static | BindingFlags.Public);
+        //_claimTypes = fldInfo.OrderBy(c => c.Name).ToDictionary(c => c.Name, c => (string?)c.GetValue(null));
     }
 
     public Dictionary<string, string?> GetRoles => _roles;
 
     public Dictionary<string, string?> GetClaimsList => _claimTypes;
 
-    public async Task<(int, IEnumerable<dynamic>)> GetRoleListAsync()
+    public void CheckAndCreateRoles()
     {
-        var qry = _roleManager.Roles.Include(r => r.Claims).OrderBy(r => r.Name);
 
-        int total = await qry.CountAsync();
+    }
 
-        var data = (await qry.ToArrayAsync()).Select(r => new
-                                                            {
-                                                                Id = r.Id,
-                                                                Name = r.Name,
-                                                                Claims = r.Claims.Select(c => new KeyValuePair<string, string?>(_claimTypes.Single(x => x.Value == c.ClaimType).Key, c.ClaimValue!)),
-                                                            });
+    public async Task<bool> GetClaimListAsync()
+    {
 
-        return (total, data);
+        return false;
+    }
+
+    public async Task<bool> CreateClaimAsync()
+    {
+
+        return false;
+    }
+
+    public async Task<bool> UpdateClaimAsync()
+    {
+        return false;
+    }
+
+    public async Task<bool> DeleteClaimAsync()
+    {
+        return false;
     }
 
     public async Task<IResult> CreateRole(string name)
     {
         try
         {
-            var role = new DuQIdentityRole(name);
+            var role = new ApplicationRole(name);
 
             var result = await _roleManager.CreateAsync(role);
             if (result.Succeeded)

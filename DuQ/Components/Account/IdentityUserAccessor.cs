@@ -1,11 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using DuQ.Contexts;
+using DuQ.Models.Identity;
 
 namespace DuQ.Components.Account;
 
-internal sealed class IdentityUserAccessor(UserManager<DuQIdentityUser> userManager, IdentityRedirectManager redirectManager)
+internal sealed class IdentityUserAccessor(UserManager<ApplicationUser> userManager, IdentityRedirectManager redirectManager)
 {
-    public async Task<DuQIdentityUser> GetRequiredUserAsync(HttpContext context)
+    public async Task<ApplicationUser> GetRequiredUserAsync(HttpContext context)
     {
         var user = await userManager.GetUserAsync(context.User);
 

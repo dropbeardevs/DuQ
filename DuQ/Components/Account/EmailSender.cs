@@ -1,4 +1,5 @@
 using DuQ.Contexts;
+using DuQ.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using PostmarkDotNet;
@@ -7,7 +8,7 @@ using Serilog;
 
 namespace DuQ.Components.Account;
 
-public class EmailSender: IEmailSender<DuQIdentityUser>
+public class EmailSender: IEmailSender<ApplicationUser>
 {
     private readonly IConfiguration _configuration;
     private string _postmarkToken;
@@ -24,16 +25,16 @@ public class EmailSender: IEmailSender<DuQIdentityUser>
                             throw new ArgumentNullException(_emailFromAddress);
     }
 
-    public Task SendConfirmationLinkAsync(DuQIdentityUser user, string email,
+    public Task SendConfirmationLinkAsync(ApplicationUser user, string email,
         string confirmationLink) => SendEmailAsync(email, "Confirm your email",
              "Please confirm your account by " +
              $"<a href='{confirmationLink}'>clicking here</a>.");
 
-    public Task SendPasswordResetLinkAsync(DuQIdentityUser user, string email,
+    public Task SendPasswordResetLinkAsync(ApplicationUser user, string email,
         string resetLink) => SendEmailAsync(email, "Reset your password",
         $"Please reset your password by <a href='{resetLink}'>clicking here</a>.");
 
-    public Task SendPasswordResetCodeAsync(DuQIdentityUser user, string email,
+    public Task SendPasswordResetCodeAsync(ApplicationUser user, string email,
         string resetCode) => SendEmailAsync(email, "Reset your password",
         $"Please reset your password using the following code: {resetCode}");
 

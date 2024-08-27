@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DuQ.Models.Identity;
 
-public class DuQIdentityRole : IdentityRole
+public class ApplicationRole : IdentityRole
 {
-    public DuQIdentityRole() { }
+    public ApplicationRole() { }
 
-    public DuQIdentityRole(string roleName)
+    public ApplicationRole(string roleName)
         : base(roleName) { }
 
     public ICollection<IdentityRoleClaim<string>> Claims { get; set; }

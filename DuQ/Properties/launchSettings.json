@@ -1,11 +1,11 @@
 {
   "profiles": {
-    "https": {
+    "http": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:7053;http://localhost:5291",
-      "launchUrl": "status",
+      "launchBrowser": true,
+      "applicationUrl": "http://localhost:8080",
+      "launchUrl": "CampusID/Admin",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Primitives;
 using DuQ.Components.Account.Pages;
 using DuQ.Components.Account.Pages.Manage;
 using DuQ.Contexts;
+using DuQ.Models.Identity;
 
 namespace Microsoft.AspNetCore.Routing;
 
@@ -23,7 +24,7 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
 
         accountGroup.MapPost("/PerformExternalLogin", (
             HttpContext context,
-            [FromServices] SignInManager<DuQIdentityUser> signInManager,
+            [FromServices] SignInManager<ApplicationUser> signInManager,
             [FromForm] string provider,
             [FromForm] string returnUrl) =>
         {
@@ -42,7 +43,7 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
 
         accountGroup.MapPost("/Logout", async (
             ClaimsPrincipal user,
-            SignInManager<DuQIdentityUser> signInManager,
+            SignInManager<ApplicationUser> signInManager,
             [FromForm] string returnUrl) =>
         {
             await signInManager.SignOutAsync();
@@ -53,7 +54,7 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
 
         manageGroup.MapPost("/LinkExternalLogin", async (
             HttpContext context,
-            [FromServices] SignInManager<DuQIdentityUser> signInManager,
+            [FromServices] SignInManager<ApplicationUser> signInManager,
             [FromForm] string provider) =>
         {
             // Clear the existing external cookie to ensure a clean login process
@@ -73,7 +74,7 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
 
         manageGroup.MapPost("/DownloadPersonalData", async (
             HttpContext context,
-            [FromServices] UserManager<DuQIdentityUser> userManager,
+            [FromServices] UserManager<ApplicationUser> userManager,
             [FromServices] AuthenticationStateProvider authenticationStateProvider) =>
         {
             var user = await userManager.GetUserAsync(context.User);
@@ -87,7 +88,7 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
 
             // Only include personal data for download
             var personalData = new Dictionary<string, string>();
-            var personalDataProps = typeof(DuQIdentityUser).GetProperties().Where(
+            var personalDataProps = typeof(ApplicationUser).GetProperties().Where(
                 prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
             foreach (var p in personalDataProps)
             {

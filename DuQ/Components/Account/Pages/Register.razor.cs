@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using DuQ.Components.Account.Pages.Manage;
 using DuQ.Contexts;
+using DuQ.Models.Identity;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
@@ -78,27 +79,27 @@ public partial class Register
         RedirectManager.RedirectTo(ReturnUrl);
     }
 
-    private DuQIdentityUser CreateUser()
+    private ApplicationUser CreateUser()
     {
         try
         {
-            return Activator.CreateInstance<DuQIdentityUser>();
+            return Activator.CreateInstance<ApplicationUser>();
         }
         catch
         {
-            throw new InvalidOperationException($"Can't create an instance of '{nameof(DuQIdentityUser)}'. " +
-                                                $"Ensure that '{nameof(DuQIdentityUser)}' is not an abstract class and has a parameterless constructor.");
+            throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                                                $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor.");
         }
     }
 
-    private IUserEmailStore<DuQIdentityUser> GetEmailStore()
+    private IUserEmailStore<ApplicationUser> GetEmailStore()
     {
         if (!UserManager.SupportsUserEmail)
         {
             throw new NotSupportedException("The default UI requires a user store with email support.");
         }
 
-        return (IUserEmailStore<DuQIdentityUser>)UserStore;
+        return (IUserEmailStore<ApplicationUser>)UserStore;
     }
 
     private void HandleValidationRequested(object? sender, ValidationRequestedEventArgs args)
