@@ -12,19 +12,19 @@ namespace DuQ.Services;
 public class IdentityService
 {
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly RoleManager<ApplicationRole> _roleManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
 
     private Dictionary<string, string?> _roles;
     private Dictionary<string, string?> _claimTypes;
 
-    public IdentityService(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+    public IdentityService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
 
         CheckAndCreateRoles();
 
-        //_roles = roleManager.Roles.OrderBy(r => r.Name).ToDictionary(r => r.Id, r => r.Name);
+        _roles = roleManager.Roles.OrderBy(r => r.Name).ToDictionary(r => r.Id, r => r.Name);
         //var fldInfo = typeof(ClaimTypes).GetFields(BindingFlags.Static | BindingFlags.Public);
         //_claimTypes = fldInfo.OrderBy(c => c.Name).ToDictionary(c => c.Name, c => (string?)c.GetValue(null));
     }
@@ -35,7 +35,18 @@ public class IdentityService
 
     public void CheckAndCreateRoles()
     {
+        string role = "Admin";
 
+        Task<bool> roleExistsTask = _roleManager.RoleExistsAsync(role);
+
+        bool roleExists = roleExistsTask.Result;
+
+        if (!roleExists)
+        {
+            Task<IdentityResult> createRoleTask = _roleManager.CreateAsync(new IdentityRole(role));
+
+            IdentityResult result = createRoleTask.Result;
+        }
     }
 
     public async Task<bool> GetClaimListAsync()
@@ -60,90 +71,90 @@ public class IdentityService
         return false;
     }
 
-    public async Task<IResult> CreateRole(string name)
-    {
-        try
-        {
-            var role = new ApplicationRole(name);
-
-            var result = await _roleManager.CreateAsync(role);
-            if (result.Succeeded)
-            {
-                Log.Information("Created role {name}.", name);
-                return Results.NoContent();
-            }
-            else
-                return Results.BadRequest(result.Errors.First().Description);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failure creating role {name}.", name);
-            return Results.Problem(statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
-        }
-    }
-
-    public async Task<IResult> UpdateRole(string id, string name, List<KeyValuePair<string, string>> claims)
-    {
-        try
-        {
-            var role = await _roleManager.FindByIdAsync(id);
-            if (role == null)
-                return Results.NotFound("Role not found.");
-
-            role.Name = name;
-
-            var result = await _roleManager.UpdateAsync(role);
-
-            if (result.Succeeded)
-            {
-                Log.Information("Updated role {name}.", role.Name);
-
-                var roleClaims = await _roleManager.GetClaimsAsync(role);
-
-                foreach (var kvp in claims.Where(a => !roleClaims.Any(b => _claimTypes[a.Key] == b.Type && a.Value == b.Value)))
-                    await _roleManager.AddClaimAsync(role, new Claim(_claimTypes[kvp.Key]!, kvp.Value));
-
-                foreach (var claim in roleClaims.Where(a => !claims.Any(b => a.Type == _claimTypes[b.Key] && a.Value == b.Value)))
-                    await _roleManager.RemoveClaimAsync(role, claim);
-
-                return Results.NoContent();
-            }
-            else
-            {
-                return Results.BadRequest(result.Errors.First().Description);
-            }
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failure updating role {roleId}.", id);
-            return Results.Problem(statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
-        }
-    }
-
-    public async Task<IResult> DeleteRole(string id)
-    {
-        try
-        {
-            var role = await _roleManager.FindByIdAsync(id);
-            if (role == null)
-                return Results.NotFound("Role not found.");
-
-            var result = await _roleManager.DeleteAsync(role);
-
-            if (result.Succeeded)
-            {
-                Log.Information("Deleted role {name}.", role.Name);
-                return Results.NoContent();
-            }
-            else
-                return Results.BadRequest(result.Errors.First().Description);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, "Failure deleting role {roleId}.", id);
-            return Results.Problem(statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
-        }
-    }
+    // public async Task<IResult> CreateRole(string name)
+    // {
+    //     try
+    //     {
+    //         var role = new IdentityRole(name);
+    //
+    //         var result = await _roleManager.CreateAsync(role);
+    //         if (result.Succeeded)
+    //         {
+    //             Log.Information("Created role {name}.", name);
+    //             return Results.NoContent();
+    //         }
+    //         else
+    //             return Results.BadRequest(result.Errors.First().Description);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Log.Error(ex, "Failure creating role {name}.", name);
+    //         return Results.Problem(statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
+    //     }
+    // }
+    //
+    // public async Task<IResult> UpdateRole(string id, string name, List<KeyValuePair<string, string>> claims)
+    // {
+    //     try
+    //     {
+    //         var role = await _roleManager.FindByIdAsync(id);
+    //         if (role == null)
+    //             return Results.NotFound("Role not found.");
+    //
+    //         role.Name = name;
+    //
+    //         var result = await _roleManager.UpdateAsync(role);
+    //
+    //         if (result.Succeeded)
+    //         {
+    //             Log.Information("Updated role {name}.", role.Name);
+    //
+    //             var roleClaims = await _roleManager.GetClaimsAsync(role);
+    //
+    //             foreach (var kvp in claims.Where(a => !roleClaims.Any(b => _claimTypes[a.Key] == b.Type && a.Value == b.Value)))
+    //                 await _roleManager.AddClaimAsync(role, new Claim(_claimTypes[kvp.Key]!, kvp.Value));
+    //
+    //             foreach (var claim in roleClaims.Where(a => !claims.Any(b => a.Type == _claimTypes[b.Key] && a.Value == b.Value)))
+    //                 await _roleManager.RemoveClaimAsync(role, claim);
+    //
+    //             return Results.NoContent();
+    //         }
+    //         else
+    //         {
+    //             return Results.BadRequest(result.Errors.First().Description);
+    //         }
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Log.Error(ex, "Failure updating role {roleId}.", id);
+    //         return Results.Problem(statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
+    //     }
+    // }
+    //
+    // public async Task<IResult> DeleteRole(string id)
+    // {
+    //     try
+    //     {
+    //         var role = await _roleManager.FindByIdAsync(id);
+    //         if (role == null)
+    //             return Results.NotFound("Role not found.");
+    //
+    //         var result = await _roleManager.DeleteAsync(role);
+    //
+    //         if (result.Succeeded)
+    //         {
+    //             Log.Information("Deleted role {name}.", role.Name);
+    //             return Results.NoContent();
+    //         }
+    //         else
+    //             return Results.BadRequest(result.Errors.First().Description);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Log.Error(ex, "Failure deleting role {roleId}.", id);
+    //         return Results.Problem(statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
+    //     }
+    // }
 
     // public async Task<dynamic> UserList(int skip, int limit, string? sort, string? search)
     // {

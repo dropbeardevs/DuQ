@@ -1,5 +1,6 @@
 using DuQ.Components;
 using DuQ.Components.Account;
+using DuQ.Components.Pages.Checkin;
 using DuQ.Contexts;
 using DuQ.Core;
 using DuQ.Models.Identity;
@@ -7,7 +8,6 @@ using DuQ.Services;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using MudBlazor.Services;
 using Serilog;
 
@@ -62,7 +62,8 @@ try
 
     builder.Services.AddDbContext<DuQIdentityDbContext>(options =>
         options.UseNpgsql(postgresIdentityConnectionString));
-    //builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+    builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
     builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
            .AddRoles<IdentityRole>()
@@ -95,11 +96,11 @@ try
         });
     });
 
-    builder.Services.AddTransient<DuQ.Components.Pages.Checkin.Domain>();
+    builder.Services.AddTransient<Domain>();
     builder.Services.AddTransient<DuQ.Components.Pages.Status.Domain>();
     builder.Services.AddTransient<DuQ.Components.Pages.Admin.Domain>();
     builder.Services.AddSingleton<DbSaveNotifier>();
-    //builder.Services.AddTransient<IdentityService>();
+    builder.Services.AddTransient<IdentityService>();
 
     //builder.Services.AddHttpClient();
     builder.Services.AddMudServices();
